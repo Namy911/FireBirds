@@ -39,6 +39,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+
         mLogin = view.findViewById(R.id.edt_login);
         mPass = view.findViewById(R.id.edt_pass);
 
@@ -91,7 +92,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         String login = "t@t.ru";
         String pass = "123456";
-
         mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(login, pass)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -107,6 +107,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     }
                 });
     }
+
     private void loginWithFacebook(LoginButton loginButton){
         callbackManager = CallbackManager.Factory.create();
         loginButton.setReadPermissions("email");

@@ -3,6 +3,7 @@ package com.example.andrey.firebirds;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class BirdsListFragment extends Fragment implements View.OnClickListener{
 
@@ -17,6 +19,7 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
     String text;
     Button mButton;
 
+    private FirebaseAuth mAuth;
     public static BirdsListFragment newInstance(String login) {
         Bundle args = new Bundle();
         args.putSerializable(LOGIN, login);
@@ -28,7 +31,10 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        text = (String)getArguments().getSerializable(LOGIN);
+//        if (getArguments().getSerializable(LOGIN) != null){
+//            text = (String)getArguments().getSerializable(LOGIN);
+//        }
+
     }
 
     @Nullable
@@ -41,6 +47,14 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        updateUI(currentUser);
+    }
     private void signOut(){
         FirebaseAuth.getInstance().signOut();
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -48,6 +62,18 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
                 .commit();
         Toast.makeText(getActivity(), "Log Out.",
                 Toast.LENGTH_SHORT).show();
+    }
+    public void updateUI(FirebaseUser user ){
+        if (user != null) {
+            Log.d("User",user.getEmail()+"");
+
+        }else {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, new LoginFragment())
+                    .commit();
+            Toast.makeText(getActivity(), "Authentication Start.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
