@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">FireBirds</string>
+    <string name="facebook_app_id">160072854720882</string>
+    <string name="fb_login_protocol_scheme">fb160072854720882</string>
+
+    <string name="sign_in">Sign in</string>
+    <string name="sign_fb">FaceBook</string>
+    <string name="sign_google">Google</string>
+    <string name="hint_login">Login</string>
+    <string name="hint_password">Password</string>
+    <string name="forgot_pass">Forgot password</string>
+    <string name="sign_up">New hire? Sign Up</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">fragment</string>
+    <string name="register_fragment">Hello Register</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_home">Back</string>
+    <string name="btn_sing_out">Sing out</string>
+</resources>

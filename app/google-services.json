@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "365230692043",
+    "firebase_url": "https://firebirds-ba621.firebaseio.com",
+    "project_id": "firebirds-ba621",
+    "storage_bucket": "firebirds-ba621.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365230692043:android:016c31d44671c69e",
+        "android_client_info": {
+          "package_name": "com.example.andrey.firebirds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365230692043-hd5s7o8eetckdiiq71d2bspmv0r723uc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.andrey.firebirds",
+            "certificate_hash": "c878bfdfb7b0d8f95343ba4d77996d8146b2943d"
+          }
+        },
+        {
+          "client_id": "365230692043-m9t7931kf70nv82tt2s08ovgb6nks7ni.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.andrey.firebirds",
+            "certificate_hash": "929af089f3e4d07f9f18b4b97fdafcf2ee405687"
+          }
+        },
+        {
+          "client_id": "365230692043-8qcqobov94b0omdiurvfgfm3952ts6mh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWDtHGAaWOC1eRBaIrUUgKAVLaQGgj9Hw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365230692043-8qcqobov94b0omdiurvfgfm3952ts6mh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
