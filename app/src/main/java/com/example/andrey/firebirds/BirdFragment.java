@@ -61,16 +61,19 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         if (!actionBird.equals(ADD_BIRD)){
             DatabaseReference refBirds = FirebaseDatabase.getInstance().getReference("birds");
 
-            refBirds.child(actionBird).addValueEventListener(new ValueEventListener() {
+            refBirds.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     List<Bird> birds = new ArrayList<>();
-                    Bird bird1;
                     for (DataSnapshot bird :dataSnapshot.getChildren()) {
-                        bird1 = bird.getValue(Bird.class);
-                        edtName.setText(bird1.getName());
+                        birds.add(bird.getValue(Bird.class));
                     }
-
+                    for (Bird bird : birds) {
+                        if (bird.getId().equals(actionBird)){
+                            edtName.setText(bird.getName());
+                            edtSurname.setText(bird.getSurname());
+                        }
+                    }
                 }
 
                 @Override
