@@ -1,12 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
     tools:context="com.example.andrey.firebirds.BirdFragment">
 
-    <TextView
-        android:layout_width="match_parent"
+    <EditText
+        android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:text="@string/register_fragment" />
+        android:id="@+id/edt_bird_name"
+        android:hint="@string/edth_bird_name"/>
+
+    <EditText
+        android:layout_width="100dp"
+        android:hint="@string/edth_bird_surname"
+        android:id="@+id/edt_bird_surname"
+        android:layout_height="match_parent" />
+    <Button
+        android:layout_width="wrap_content"
+        android:text="@string/btn_add_bird"
+        android:id="@+id/btn_add_bird"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -19,9 +19,9 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = manager.findFragmentById(R.id.main_container);
 
         if (fragment == null){
-            fragment = new BirdsListFragment();
+            //fragment = new LoginFragment();
             manager.beginTransaction()
-                    .add( R.id.main_container, fragment)
+                    .add( R.id.main_container, BirdsListFragment.newInstance("Logged"))
                     .commit();
         }
     }

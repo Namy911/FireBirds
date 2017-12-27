@@ -17,4 +17,7 @@
     <string name="btn_register">Register</string>
     <string name="btn_home">Back</string>
     <string name="btn_sing_out">Sing out</string>
+    <string name="btn_add_bird">Add bird</string>
+    <string name="edth_bird_name">Name of bird</string>
+    <string name="edth_bird_surname">Bird surname</string>
 </resources>
