@@ -11,13 +11,19 @@
     <string name="forgot_pass">Forgot password</string>
     <string name="sign_up">New hire? Sign Up</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">fragment</string>
     <string name="register_fragment">Hello Register</string>
     <string name="btn_register">Register</string>
     <string name="btn_home">Back</string>
     <string name="btn_sing_out">Sing out</string>
     <string name="btn_add_bird">Add bird</string>
+    <string name="btn_update_bird">Update</string>
     <string name="edth_bird_name">Name of bird</string>
     <string name="edth_bird_surname">Bird surname</string>
+    <string name="btn_delete_bird">Delete</string>
+    <string name="msg_delete_bird">Are you shore?</string>
+    <string name="msg_ok_delete">Yes</string>
+    <string name="msg_no_delete">No</string>
+    <string name="snak_add_bird">Bird has by added</string>
+    <string name="snak_action_add_bird">Add new bird?</string>
 </resources>

@@ -1,11 +1,11 @@
 package com.example.andrey.firebirds;
 
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +26,7 @@ import java.util.List;
 public class BirdsListFragment extends Fragment implements View.OnClickListener{
 
     public final static String LOGIN = "login_";
-    private Button button;
+    private FloatingActionButton btnAddBird;
 
     private FirebaseAuth mAuth;
     private DatabaseReference dataBase;
@@ -46,9 +45,9 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments().getString(LOGIN) != null){
-
-        }
+//        if (getArguments().getString(LOGIN) != null){
+//
+//        }
 
     }
 
@@ -60,15 +59,15 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
         recyBirds.setLayoutManager(new LinearLayoutManager(getActivity()));
         dataBase = FirebaseDatabase.getInstance().getReference();
 
-        button = view.findViewById(R.id.test);
-        button.setOnClickListener(this);
+        btnAddBird = view.findViewById(R.id.floatBtnAdd);
+        btnAddBird.setOnClickListener(this);
 
         updateUI();
         return view;
     }
 
     private void updateUI() {
-        DatabaseReference refBirds = FirebaseDatabase.getInstance().getReference("birds");
+        DatabaseReference refBirds = FirebaseDatabase.getInstance().getReference(BirdFragment.TABLE_BIRDS);
         refBirds.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,7 +129,6 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
         @Override
         public boolean onLongClick(View v) {
             birdAction(id);
-            Toast.makeText(getActivity(),id,Toast.LENGTH_SHORT).show();
             return true;
         }
     }

@@ -14,6 +14,10 @@ public class Bird {
         this.name = name;
         this.surname = surname;
     }
+//    public Bird(String name, String surname) {
+//        this.name = name;
+//        this.surname = surname;
+//    }
 
     public String getId() {
         return id;
