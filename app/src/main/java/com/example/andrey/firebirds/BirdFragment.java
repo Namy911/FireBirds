@@ -7,10 +7,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,9 +36,12 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
 
     private FloatingActionButton btn_action_bird;
     private FloatingActionButton btn_delete_bird;
+    private RadioGroup radioGroupGender;
+    int IdGender;
     private Bird updateBird;
     private EditText edtName;
-    private EditText edtSurname;
+    private EditText edtBirdBreed;
+    private EditText edtBirdBirth;
 
     private DatabaseReference dataBase;
 
@@ -59,22 +65,27 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_bird, container, false);
-
         dataBase = FirebaseDatabase.getInstance().getReference();
 
         edtName =  view.findViewById(R.id.edt_bird_name);
-        edtSurname =  view.findViewById(R.id.edt_bird_breed);
+        edtBirdBreed =  view.findViewById(R.id.edt_bird_breed);
+        edtBirdBirth =  view.findViewById(R.id.edt_birth);
         btn_action_bird = view.findViewById(R.id.floatBtnSave);
         btn_delete_bird = view.findViewById(R.id.floatBtnDelete);
-        //btn_action_bird.setText(getString(R.string.btn_add_bird));
+        radioGroupGender = view.findViewById(R.id.rad_gr__gender);
+
         btn_action_bird.setOnClickListener(this);
         btn_delete_bird.setOnClickListener(this);
 
         if (actionBird.equals(ADD_BIRD)) {
             btn_delete_bird.setVisibility(View.GONE);
+            radioGroupGender.check(R.id.radioUnknown);
+            getGender();
         }
 
+        getGender();
         updateBirdData();
+
         return view;
     }
 
@@ -91,8 +102,10 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
                     for (Bird bird : birds) {
                         if (bird.getId().equals(actionBird)){
                             updateBird = bird;
+                            edtBirdBirth.setText(Long.toString(bird.getBirth()));
                             edtName.setText(bird.getName());
-                            edtSurname.setText(bird.getSurname());
+                            edtBirdBreed.setText(Long.toString(bird.getBirth()));
+                            ((RadioButton)radioGroupGender.getChildAt(bird.getGender())).setChecked(true);
                         }
                     }
                 }
@@ -102,7 +115,6 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
 
                 }
             });
-            //btn_action_bird.setText(getString(R.string.btn_update_bird));
         }
     }
 
@@ -118,25 +130,36 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
                     .commit();
         }
     }
+    private void getGender(){
+
+        radioGroupGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radBtn = group.findViewById(checkedId);
+                IdGender = group.indexOfChild(radBtn);
+            }
+        });
+    }
     @Override
     public void onClick(View v) {
         if (actionBird.equals(ADD_BIRD)) {
             String birdId = dataBase.push().getKey();
-            Bird bird = new Bird(birdId, edtName.getText().toString(), edtSurname.getText().toString());
+            Bird bird = new Bird(birdId, edtName.getText().toString(),edtBirdBreed.getText().toString(), Long.parseLong(edtBirdBirth.getText().toString()), IdGender);
             dataBase.child(TABLE_BIRDS).child(birdId).setValue(bird);
             Snackbar.make(v, R.string.snak_add_bird, Snackbar.LENGTH_LONG)
                     .setAction(R.string.snak_action_add_bird, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             edtName.setText("");
-                            edtSurname.setText("");
+                            edtBirdBreed.setText("");
+                            edtBirdBirth.setText("");
+                            radioGroupGender.check(R.id.radioUnknown);
                             edtName.requestFocus();
                         }
                     }).show();
-
         }else{
             Map<String, Object> birdValues = new HashMap<>();
-            Bird updateBirdData = new Bird(actionBird, edtName.getText().toString(),edtSurname.getText().toString());
+            Bird updateBirdData = new Bird(actionBird, edtName.getText().toString(),edtBirdBreed.getText().toString(), Long.parseLong(edtBirdBirth.getText().toString()), IdGender);
             birdValues.put(TABLE_BIRDS + "/" + actionBird, updateBirdData);
             dataBase.updateChildren(birdValues);
         }

@@ -36,7 +36,7 @@
             android:hint="@string/edth_bird_breed" />
 
         <EditText
-            android:id="@+id/edt_bird_birth"
+            android:id="@+id/edt_birth"
             android:layout_width="match_parent"
             android:layout_below="@+id/edt_bird_breed"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_bird_birth"
+            android:layout_below="@+id/edt_birth"
             android:layout_marginTop="12dp"
             android:id="@+id/txt_pair"
             android:text="@string/gender_choise"
@@ -54,11 +54,17 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_bird_birth"
+            android:layout_below="@+id/edt_birth"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="65dp"
-            android:id="@+id/wrap_content"
+            android:id="@+id/rad_gr__gender"
             android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioUnknown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="U" />
 
             <RadioButton
                 android:id="@+id/radioMale"
@@ -72,19 +78,13 @@
                 android:layout_height="wrap_content"
                 android:text="F" />
 
-            <RadioButton
-                android:id="@+id/radioUnknown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="U" />
-
         </RadioGroup>
 
         <ImageView
             android:id="@+id/img_pair"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_bird_birth"
+            android:layout_below="@+id/edt_birth"
             android:layout_marginTop="60dp"
             app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
 
@@ -92,7 +92,7 @@
             android:id="@+id/txt_pait_name"
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_bird_birth"
+            android:layout_below="@+id/edt_birth"
             android:layout_marginTop="60dp"
             android:layout_marginLeft="50dp"
             android:text="@string/no_data"
@@ -102,7 +102,7 @@
             android:id="@+id/txt_pair_id"
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_bird_birth"
+            android:layout_below="@+id/edt_birth"
             android:text="@string/no_data"
             android:layout_marginTop="85dp"
             android:layout_marginLeft="50dp"
@@ -111,7 +111,7 @@
             android:id="@+id/img_mother"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_bird_birth"
+            android:layout_below="@+id/edt_birth"
             android:layout_marginTop="60dp"
             android:layout_marginLeft="140dp"
             app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
@@ -120,7 +120,7 @@
             android:id="@+id/txt_mother_name"
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_bird_birth"
+            android:layout_below="@+id/edt_birth"
             android:layout_marginTop="60dp"
             android:layout_marginLeft="190dp"
             android:text="@string/no_data"
@@ -130,7 +130,7 @@
             android:id="@+id/txt_mother_id"
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_bird_birth"
+            android:layout_below="@+id/edt_birth"
             android:text="@string/no_data"
             android:layout_marginTop="85dp"
             android:layout_marginLeft="190dp"

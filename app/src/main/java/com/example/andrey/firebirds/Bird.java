@@ -3,21 +3,21 @@ package com.example.andrey.firebirds;
 public class Bird {
     private  String id;
     private String name;
-    private String surname;
+    private String breed;
+    private long birth;
+    private int gender;
 
     public Bird() {
 
     }
 
-    public Bird(String id, String name, String surname) {
+    public Bird(String id, String name, String breed, long birth, int gender) {
         this.id = id;
         this.name = name;
-        this.surname = surname;
+        this.breed = breed;
+        this.birth = birth;
+        this.gender = gender;
     }
-//    public Bird(String name, String surname) {
-//        this.name = name;
-//        this.surname = surname;
-//    }
 
     public String getId() {
         return id;
@@ -35,11 +35,27 @@ public class Bird {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getBreed() {
+        return breed;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public long getBirth() {
+        return birth;
+    }
+
+    public void setBirth(long birth) {
+        this.birth = birth;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 }

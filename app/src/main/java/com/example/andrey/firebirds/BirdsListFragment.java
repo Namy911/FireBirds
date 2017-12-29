@@ -122,7 +122,7 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
         public void bind(Bird bird) {
             id = bird.getId();
             birdName.setText(bird.getName());
-            birdId.setText(bird.getSurname());
+            birdId.setText(Long.toString(bird.getBirth()));
         }
 
 
