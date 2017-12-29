@@ -7,13 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +63,7 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         dataBase = FirebaseDatabase.getInstance().getReference();
 
         edtName =  view.findViewById(R.id.edt_bird_name);
-        edtSurname =  view.findViewById(R.id.edt_bird_surname);
+        edtSurname =  view.findViewById(R.id.edt_bird_breed);
         btn_action_bird = view.findViewById(R.id.floatBtnSave);
         btn_delete_bird = view.findViewById(R.id.floatBtnDelete);
         //btn_action_bird.setText(getString(R.string.btn_add_bird));

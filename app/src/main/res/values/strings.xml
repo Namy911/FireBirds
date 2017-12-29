@@ -19,11 +19,14 @@
     <string name="btn_add_bird">Add bird</string>
     <string name="btn_update_bird">Update</string>
     <string name="edth_bird_name">Name of bird</string>
-    <string name="edth_bird_surname">Bird surname</string>
+    <string name="edth_bird_breed">Bird Breed</string>
     <string name="btn_delete_bird">Delete</string>
     <string name="msg_delete_bird">Are you shore?</string>
     <string name="msg_ok_delete">Yes</string>
     <string name="msg_no_delete">No</string>
     <string name="snak_add_bird">Bird has by added</string>
     <string name="snak_action_add_bird">Add new bird?</string>
+    <string name="gender_choise">Gender</string>
+    <string name="edth_bird_birth">Bird year of birth</string>
+    <string name="no_data">no data</string>
 </resources>
