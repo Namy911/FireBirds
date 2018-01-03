@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BirdsListFragment extends Fragment implements View.OnClickListener{
 
@@ -33,6 +36,8 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
 
     private RecyclerView.Adapter adapter ;
     private RecyclerView recyBirds;
+    Map<String, Bird> allInfoBirds;
+    String id;
 
     public static BirdsListFragment newInstance(String login) {
         Bundle args = new Bundle();
@@ -61,6 +66,7 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
 
         btnAddBird = view.findViewById(R.id.floatBtnAdd);
         btnAddBird.setOnClickListener(this);
+        //Map<String, Bird> allInfoBirds = new HashMap<>();
 
         updateUI();
         return view;
@@ -72,10 +78,15 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Bird> birds = new ArrayList<>();
+                List<String> idBirds = new ArrayList<>();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     birds.add(snapshot.getValue(Bird.class));
+                    idBirds.add(snapshot.getKey());
+                    //allInfoBirds.put(snapshot.getKey(), snapshot.getValue(Bird.class));
                 }
-                adapter = new BirdsAdapter(birds);
+
+                adapter = new BirdsAdapter(birds, idBirds);
                 adapter.notifyDataSetChanged();
                 recyBirds.setAdapter(adapter);
             }
@@ -119,8 +130,9 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
 
         }
 
-        public void bind(Bird bird) {
-            id = bird.getId();
+        public void bind(Bird bird, String idBird) {
+            //id = bird.getId();
+            id = idBird;
             birdName.setText(bird.getName());
             birdId.setText(Long.toString(bird.getBirth()));
         }
@@ -134,9 +146,11 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
     }
     private class BirdsAdapter extends RecyclerView.Adapter<BirdsHolder>{
         private List<Bird> birdList;
+        private List<String> idBirds;
 
-        public BirdsAdapter(List<Bird> birdList) {
+        public BirdsAdapter(List<Bird> birdList, List<String> idBirds) {
             this.birdList = birdList;
+            this.idBirds = idBirds;
         }
 
         @Override
@@ -148,7 +162,8 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
         @Override
         public void onBindViewHolder(BirdsHolder holder, int position) {
             Bird bird = birdList.get(position);
-            holder.bind(bird);
+            String idBird = idBirds.get(position);
+            holder.bind(bird, idBird);
         }
 
         @Override

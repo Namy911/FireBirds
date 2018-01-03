@@ -89,7 +89,7 @@
             app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
 
         <TextView
-            android:id="@+id/txt_pait_name"
+            android:id="@+id/txt_pair_name"
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edt_birth"
@@ -114,6 +114,7 @@
             android:layout_below="@+id/edt_birth"
             android:layout_marginTop="60dp"
             android:layout_marginLeft="140dp"
+
             app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
 
         <TextView
@@ -142,6 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_pair"
             android:layout_marginTop="10dp"
+
             app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
 
         <TextView
@@ -171,6 +173,7 @@
             android:layout_below="@+id/img_pair"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="140dp"
+
             app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
 
         <TextView

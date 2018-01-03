@@ -26,7 +26,12 @@
     <string name="msg_no_delete">No</string>
     <string name="snak_add_bird">Bird has by added</string>
     <string name="snak_action_add_bird">Add new bird?</string>
+
     <string name="gender_choise">Gender</string>
     <string name="edth_bird_birth">Bird year of birth</string>
-    <string name="no_data">no data</string>
+    <string name="no_data">Empty</string>
+
+    <string name="dialog_father_bird">Name of Father</string>
+    <string name="dialog_mather_bird">Mather</string>
+    <string name="dialog_pair_bird">Pair</string>
 </resources>

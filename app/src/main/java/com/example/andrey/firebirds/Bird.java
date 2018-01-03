@@ -1,30 +1,20 @@
 package com.example.andrey.firebirds;
 
 public class Bird {
-    private  String id;
+
     private String name;
     private String breed;
     private long birth;
     private int gender;
 
-    public Bird() {
+    public Bird() {}
 
-    }
+    public Bird( String name, String breed, long birth, int gender) {
 
-    public Bird(String id, String name, String breed, long birth, int gender) {
-        this.id = id;
         this.name = name;
         this.breed = breed;
         this.birth = birth;
         this.gender = gender;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

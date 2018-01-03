@@ -1,0 +1,61 @@
+Bird   -> 
+		id
+		name
+		breed
+		gender
+		date of birth
+		
+		id_pair
+		id_family
+		
+Pair   ->
+		id_bird_m
+		id_bird_f
+		id_pair
+		
+Family ->
+		id_mother
+		id_father
+		id_family
+
+ ===============================================================================================================
+		JSON
+ ===============================================================================================================
+  {
+  "Birds":{
+    "Bird 1":{
+        "name":"name",
+        "Families":{
+            "Family 1":true           
+        }
+		"Pairs" :{
+			"Pair 2":true
+		}
+    },
+    "Bird 2": ...,
+    "Bird 3": ...
+  },
+  "Families":{
+	"Family 1"{
+		"mother": "id_mother",
+		"father": "id_father",
+		"members":{
+			"Bird 1":true,
+			"Bird 3":true
+		}
+	},
+	"Family 2" : ...,
+	"Family 3" : ...
+	},
+ "Pairs"{
+	"Pair 1"  
+		"bird_f": "id_bird_f",
+		"bird_m": "id_bird_m",
+			"members":{
+				"Bird 3":true,
+				"Bird 5":true
+			},
+	"Pair 2": ...,
+	"Pair 3": ...
+	}
+}
