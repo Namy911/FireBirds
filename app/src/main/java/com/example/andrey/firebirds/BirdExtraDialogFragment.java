@@ -48,7 +48,7 @@ public class BirdExtraDialogFragment extends DialogFragment {
                 });
         switch(member){
             case FATHER_BIRD : dialog.setTitle(R.string.dialog_father_bird);break;
-            case MOTHER_BIRD: dialog.setTitle(R.string.dialog_mather_bird);break;
+            case MOTHER_BIRD : dialog.setTitle(R.string.dialog_mather_bird);break;
             case PAIR_BIRD   : dialog.setTitle(R.string.dialog_pair_bird);break;
 
         }

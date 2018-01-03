@@ -192,11 +192,13 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             String idFamily = dataBase.push().getKey();
             Family family = new Family(txtMother.getText().toString(), txtFather.getText().toString());
             dataBase.child(TABLE_FAMILIES).child(idFamily).setValue(family);
+            dataBase.child(TABLE_FAMILIES).child(TABLE_BIRDS).child(idBird).setValue(true);
             dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_FAMILIES).child(idFamily).setValue(true);
 
             String idPair = dataBase.push().getKey();
             Pair pair = new Pair(txtPair.getText().toString());
             dataBase.child(TABLE_PAIRS).child(idPair).setValue(pair);
+            dataBase.child(TABLE_PAIRS).child(TABLE_BIRDS).child(idBird).setValue(true);
             dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_PAIRS).child(idPair).setValue(true);
 
             resetInfoBird(v);
