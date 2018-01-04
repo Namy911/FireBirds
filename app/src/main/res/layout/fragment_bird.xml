@@ -103,10 +103,11 @@
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edt_birth"
-            android:text="@string/no_data"
-            android:layout_marginTop="85dp"
             android:layout_marginLeft="50dp"
-            android:ems="10" />
+            android:layout_marginTop="85dp"
+            android:ems="10"
+            android:text="@string/no_data"
+            android:textSize="10sp" />
         <ImageView
             android:id="@+id/img_mother"
             android:layout_width="wrap_content"
@@ -132,10 +133,11 @@
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edt_birth"
-            android:text="@string/no_data"
-            android:layout_marginTop="85dp"
             android:layout_marginLeft="190dp"
-            android:ems="10" />
+            android:layout_marginTop="85dp"
+            android:ems="10"
+            android:text="@string/no_data"
+            android:textSize="10sp" />
 
         <ImageView
             android:id="@+id/img_father"
@@ -161,10 +163,11 @@
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_pair"
-            android:text="@string/no_data"
-            android:layout_marginTop="35dp"
             android:layout_marginLeft="50dp"
-            android:ems="10" />
+            android:layout_marginTop="35dp"
+            android:ems="10"
+            android:text="@string/no_data"
+            android:textSize="10sp" />
 
         <ImageView
             android:id="@+id/img_cup"
@@ -191,10 +194,11 @@
             android:layout_width="@dimen/lauout_width_desc"
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_pair"
-            android:text="@string/no_data"
-            android:layout_marginTop="35dp"
             android:layout_marginLeft="190dp"
-            android:ems="10" />
+            android:layout_marginTop="35dp"
+            android:ems="10"
+            android:text="@string/no_data"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 public class BirdFragment extends Fragment implements View.OnClickListener {
     private static final String DIALOG_DELETE = "DialogDelete";
@@ -37,10 +40,13 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
     public static final String TABLE_BIRDS = "birds";
     public static final String TABLE_FAMILIES = "families";
     public static final String TABLE_PAIRS = "pairs";
+
     private String actionBird;
+    private Boolean saveData = false;
 
     private FloatingActionButton btn_action_bird;
     private FloatingActionButton btn_delete_bird;
+
     private RadioGroup radioGroupGender;
     int IdGender;
     private Bird updateBird;
@@ -49,8 +55,12 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
     private EditText edtBirdBirth;
     private ImageView imgPair, imgFather, imgMother;
     private TextView txtPair, txtMother, txtFather;
+    private TextView txtPairId, txtMotherId, txtFatherId;
 
     private DatabaseReference dataBase;
+    private DatabaseReference tableBirds;
+    private DatabaseReference tableFamilies;
+    private DatabaseReference tablePairs;
 
     public static BirdFragment newInstance(String action) {
         BirdFragment fragment = new BirdFragment();
@@ -73,6 +83,9 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_bird, container, false);
         dataBase = FirebaseDatabase.getInstance().getReference();
+        tableBirds = dataBase.child(TABLE_BIRDS);
+        tableFamilies = dataBase.child(TABLE_FAMILIES);
+        tablePairs = dataBase.child(TABLE_PAIRS);
 
         edtName =  view.findViewById(R.id.edt_bird_name);
         edtBirdBreed =  view.findViewById(R.id.edt_bird_breed);
@@ -88,6 +101,9 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         txtPair = view.findViewById(R.id.txt_pair_name);
         txtMother = view.findViewById(R.id.txt_mother_name);
         txtFather = view.findViewById(R.id.txt_father_name);
+        txtPairId = view.findViewById(R.id.txt_pair_id);
+        txtMotherId = view.findViewById(R.id.txt_mother_id);
+        txtFatherId = view.findViewById(R.id.txt_father_id);
 
         btn_action_bird.setOnClickListener(this);
         btn_delete_bird.setOnClickListener(this);
@@ -136,7 +152,6 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             });
         }
     }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             return;
@@ -150,12 +165,43 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         }else if (requestCode == REQUEST_INFO_BIRD){
             String value = data.getStringExtra(BirdExtraDialogFragment.EXTRA_INFO_BIRD);
             switch (BirdExtraDialogFragment.member){
-                case BirdExtraDialogFragment.PAIR_BIRD : txtPair.setText(value);break;
-                case BirdExtraDialogFragment.FATHER_BIRD : txtFather.setText(value);break;
-                case BirdExtraDialogFragment.MOTHER_BIRD: txtMother.setText(value);break;
+                case BirdExtraDialogFragment.PAIR_BIRD :
+                    txtPair.setText(value);
+                    getIdExtra(BirdExtraDialogFragment.PAIR_BIRD, value);
+                    break;
+                case BirdExtraDialogFragment.FATHER_BIRD :
+                    txtFather.setText(value);
+                    getIdExtra(BirdExtraDialogFragment.FATHER_BIRD, value);
+                    break;
+                case BirdExtraDialogFragment.MOTHER_BIRD :
+                    txtMother.setText(value);
+                    getIdExtra(BirdExtraDialogFragment.MOTHER_BIRD, value);
+                    break;
             }
 
         }
+    }
+    private void getIdExtra(final String member, String value){
+        Query pair = tableBirds.orderByChild("name").equalTo(value);
+        pair.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (member == BirdExtraDialogFragment.PAIR_BIRD){
+                        txtPairId.setText(snapshot.getKey());
+                    }else if (member == BirdExtraDialogFragment.FATHER_BIRD){
+                        txtFatherId.setText(snapshot.getKey());
+                    }else if (member == BirdExtraDialogFragment.MOTHER_BIRD){
+                        txtMotherId.setText(snapshot.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
     private void getGender(){
 
@@ -172,6 +218,7 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
                 .setAction(R.string.snak_action_add_bird, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        saveData = false;
                         edtName.setText("");
                         edtBirdBreed.setText("");
                         edtBirdBirth.setText("");
@@ -181,28 +228,33 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
                 }).show();
     }
     private void addBirdInfo(View v){
-        String empty = getActivity().getString(R.string.no_data);
-        if (actionBird.equals(ADD_BIRD) && !txtMother.getText().equals(empty)
-                && !txtFather.getText().equals(empty) && !txtPair.getText().equals(empty)) {
+        //String empty = getActivity().getString(R.string.no_data);
+        if (v.getId() == R.id.floatBtnSave){
+            saveData = true;
+        }
+        if (actionBird.equals(ADD_BIRD) && saveData == true) {
 
             String idBird = dataBase.push().getKey();
             Bird bird = new Bird(edtName.getText().toString(), edtBirdBreed.getText().toString(), Long.parseLong(edtBirdBirth.getText().toString()), IdGender);
             dataBase.child(TABLE_BIRDS).child(idBird).setValue(bird);
 
             String idFamily = dataBase.push().getKey();
-            Family family = new Family(txtMother.getText().toString(), txtFather.getText().toString());
+            Family family = new Family(txtMotherId.getText().toString(), txtFatherId.getText().toString());
             dataBase.child(TABLE_FAMILIES).child(idFamily).setValue(family);
-            dataBase.child(TABLE_FAMILIES).child(TABLE_BIRDS).child(idBird).setValue(true);
+
+            dataBase.child(TABLE_FAMILIES).child(idFamily).child(TABLE_BIRDS).child(idBird).setValue(true);
             dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_FAMILIES).child(idFamily).setValue(true);
 
             String idPair = dataBase.push().getKey();
-            Pair pair = new Pair(txtPair.getText().toString());
+            Pair pair = new Pair(txtPairId.getText().toString());
             dataBase.child(TABLE_PAIRS).child(idPair).setValue(pair);
-            dataBase.child(TABLE_PAIRS).child(TABLE_BIRDS).child(idBird).setValue(true);
+
+            dataBase.child(TABLE_PAIRS).child(idPair).child(TABLE_BIRDS).child(idBird).setValue(true);
             dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_PAIRS).child(idPair).setValue(true);
 
             resetInfoBird(v);
         }
+        saveData = false;
     }
     private void updateBird(){
         if (!actionBird.equals(ADD_BIRD)) {
@@ -212,6 +264,7 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             dataBase.updateChildren(birdValues);
         }
     }
+
     @Override
     public void onClick(View v) {
         addBirdInfo(v);
