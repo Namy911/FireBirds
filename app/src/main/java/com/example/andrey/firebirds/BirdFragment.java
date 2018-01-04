@@ -133,16 +133,19 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
                     for (DataSnapshot bird :dataSnapshot.getChildren()) {
                         birds.add(bird.getValue(Bird.class));
                     }
-                    for (Bird bird : birds) {
+                    //Log.d("Update", actionBird+"");
                         //if (bird.getId().equals(actionBird)){
-                        if (!actionBird.equals(ADD_BIRD)){
-                            updateBird = bird;
-                            edtBirdBirth.setText(Long.toString(bird.getBirth()));
-                            edtName.setText(bird.getName());
-                            edtBirdBreed.setText(Long.toString(bird.getBirth()));
-                            ((RadioButton)radioGroupGender.getChildAt(bird.getGender())).setChecked(true);
+                        //if (!actionBird.equals(ADD_BIRD)){
+                            for (Bird bird : birds) {
+                                updateBird = bird;
+                                edtBirdBirth.setText(Long.toString(bird.getBirth()));
+                                edtName.setText(bird.getName());
+                                edtBirdBreed.setText(Long.toString(bird.getBirth()));
+                                ((RadioButton)radioGroupGender.getChildAt(bird.getGender())).setChecked(true);
+                                //setExtraDate(actionBird);
+                                //txtMotherId.setText();
                         }
-                    }
+                    //}
                 }
 
                 @Override
@@ -180,6 +183,27 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             }
 
         }
+    }
+    private void setExtraDate(String id ){
+        Query bird = tableBirds.child(id).child(TABLE_FAMILIES);
+        bird.addValueEventListener(new ValueEventListener() {
+            List<String> parents = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    parents.add(snapshot.getValue(String.class));
+                    Log.d("Parents", parents.size() + "");
+                }
+                for (String parent : parents) {
+                    Log.d("Parents", parent);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
     private void getIdExtra(final String member, String value){
         Query pair = tableBirds.orderByChild("name").equalTo(value);
