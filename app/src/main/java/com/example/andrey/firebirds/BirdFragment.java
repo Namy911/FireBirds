@@ -56,6 +56,8 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
     private ImageView imgPair, imgFather, imgMother;
     private TextView txtPair, txtMother, txtFather;
     private TextView txtPairId, txtMotherId, txtFatherId;
+    private String idBird;
+    private String idCollect;
 
     private DatabaseReference dataBase;
     private DatabaseReference tableBirds;
@@ -116,7 +118,6 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             radioGroupGender.check(R.id.radioUnknown);
             getGender();
         }
-
         getGender();
         updateBirdData();
 
@@ -228,7 +229,6 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         });
     }
     private void getGender(){
-
         radioGroupGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -246,6 +246,8 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
                         edtName.setText("");
                         edtBirdBreed.setText("");
                         edtBirdBirth.setText("");
+                        txtMotherId.setText("Empty");
+                        txtMother.setText("Empty");
                         radioGroupGender.check(R.id.radioUnknown);
                         edtName.requestFocus();
                     }
@@ -258,16 +260,11 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         }
         if (actionBird.equals(ADD_BIRD) && saveData == true) {
 
-            String idBird = dataBase.push().getKey();
+            idBird = dataBase.push().getKey();
             Bird bird = new Bird(edtName.getText().toString(), edtBirdBreed.getText().toString(), Long.parseLong(edtBirdBirth.getText().toString()), IdGender);
             dataBase.child(TABLE_BIRDS).child(idBird).setValue(bird);
 
-            String idFamily = dataBase.push().getKey();
-            Family family = new Family(txtMotherId.getText().toString(), txtFatherId.getText().toString());
-            dataBase.child(TABLE_FAMILIES).child(idFamily).setValue(family);
-
-            dataBase.child(TABLE_FAMILIES).child(idFamily).child(TABLE_BIRDS).child(idBird).setValue(true);
-            dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_FAMILIES).child(idFamily).setValue(true);
+            checkFamily(idBird);
 
             String idPair = dataBase.push().getKey();
             Pair pair = new Pair(txtPairId.getText().toString());
@@ -280,6 +277,79 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         }
         saveData = false;
     }
+
+//    private void collectInfoFamily(Map<String,Object> info){
+//        ArrayList<String> list = new ArrayList<>();
+//
+//        for (Map.Entry<String, Object> entry : info.entrySet()){
+//            Map singleInfo = (Map) entry.getValue();
+//            list.add((String) singleInfo.get("mother"));
+//        }
+//        Log.d( "Mother", list.toString());
+//    }
+
+    private void checkFamily(String idBird){
+//        String idFamily = dataBase.push().getKey();
+//        Family family = new Family(txtMotherId.getText().toString(), txtFatherId.getText().toString());
+//
+//        dataBase.child(TABLE_FAMILIES).child(idFamily).setValue(family);
+//        dataBase.child(TABLE_FAMILIES).child(idFamily).child(TABLE_BIRDS).child(idBird).setValue(true);
+//        dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_FAMILIES).child(idFamily).setValue(true);
+
+        DatabaseReference ref = dataBase.child(TABLE_FAMILIES);
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String id = collectFamily((Map<String, Object>) dataSnapshot.getValue());
+                        Log.d("Mother", "collectFamily-------------->" + id);
+
+                        if (collectFamily((Map<String, Object>) dataSnapshot.getValue()) == null) {
+                            addFamily();
+                            Log.d("Mother", id+"Add New Family--------------------");
+                        }else {
+                            Log.d("Mother", id+" Update Family Exist++++++++++++++++--------------------");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+    }
+    private void addFamily(){
+        String idFamily = dataBase.push().getKey();
+        Family family = new Family(txtMotherId.getText().toString(), txtFatherId.getText().toString());
+
+        dataBase.child(TABLE_FAMILIES).child(idFamily).setValue(family);
+        dataBase.child(TABLE_FAMILIES).child(idFamily).child(TABLE_BIRDS).child(idBird).setValue(true);
+        dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_FAMILIES).child(idFamily).setValue(true);
+    }
+    private String collectFamily(Map<String,Object> item) {
+        ArrayList<String> list = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : item.entrySet()){
+            Map singleFamily = (Map) entry.getValue();
+            if (singleFamily.get("mother").equals(txtMotherId.getText().toString())){
+                Log.d("Mother", "txtMotherId.getText().toString())/////////////////////////////-------------->" + txtMotherId.getText().toString());
+                //idCollect = entry.getKey();
+                //Log.d("Mother", "entry.getKey-------------->" + idCollect);
+                list.add(entry.getKey());
+            //}else {
+                //idCollect = "";
+            }
+        }
+        idCollect = "";
+        if (list.size() > 0) {
+            idCollect = "Exist";
+        }else {
+            idCollect = "";
+        }
+        Log.d("Mother", "list.size()-------------->" + list.size());
+        Log.d("Mother", "list.toString()-------------->" + list.toString());
+        return idCollect;
+    }
+
     private void updateBird(){
         if (!actionBird.equals(ADD_BIRD)) {
             Map<String, Object> birdValues = new HashMap<>();
