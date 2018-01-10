@@ -1,4 +1,4 @@
-package com.example.andrey.firebirds;
+package com.example.andrey.firebirds.model;
 
 public class User {
     public String username;

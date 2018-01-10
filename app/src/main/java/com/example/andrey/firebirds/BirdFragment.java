@@ -17,6 +17,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.andrey.firebirds.model.Bird;
+import com.example.andrey.firebirds.model.Family;
+import com.example.andrey.firebirds.model.Pair;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,9 +31,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 public class BirdFragment extends Fragment implements View.OnClickListener {
+
+    private String TAG = "Mother";
     private static final String DIALOG_DELETE = "DialogDelete";
     private static final String DIALOG_INFO_BIRD = "DialogInfoBird";
     private static final int REQUEST_DELETE = 0;
@@ -57,7 +61,12 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
     private TextView txtPair, txtMother, txtFather;
     private TextView txtPairId, txtMotherId, txtFatherId;
     private String idBird;
-    private String idCollect;
+    //private String flagIdCollect;
+    private Boolean flagIdCollect;
+
+    //private String idInfoMother;
+    private String idInfoFamily;
+    //private Map<String, String> infoMother;
 
     private DatabaseReference dataBase;
     private DatabaseReference tableBirds;
@@ -81,8 +90,7 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_bird, container, false);
         dataBase = FirebaseDatabase.getInstance().getReference();
         tableBirds = dataBase.child(TABLE_BIRDS);
@@ -120,6 +128,8 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         }
         getGender();
         updateBirdData();
+
+        //infoMother = new HashMap<>();
 
         return view;
     }
@@ -246,8 +256,8 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
                         edtName.setText("");
                         edtBirdBreed.setText("");
                         edtBirdBirth.setText("");
-                        txtMotherId.setText("Empty");
-                        txtMother.setText("Empty");
+                        txtMotherId.setText(R.string.no_data);
+                        txtMother.setText(R.string.no_data);
                         radioGroupGender.check(R.id.radioUnknown);
                         edtName.requestFocus();
                     }
@@ -264,7 +274,7 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             Bird bird = new Bird(edtName.getText().toString(), edtBirdBreed.getText().toString(), Long.parseLong(edtBirdBirth.getText().toString()), IdGender);
             dataBase.child(TABLE_BIRDS).child(idBird).setValue(bird);
 
-            checkFamily(idBird);
+            checkFamily();
 
             String idPair = dataBase.push().getKey();
             Pair pair = new Pair(txtPairId.getText().toString());
@@ -277,46 +287,22 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         }
         saveData = false;
     }
-
-//    private void collectInfoFamily(Map<String,Object> info){
-//        ArrayList<String> list = new ArrayList<>();
-//
-//        for (Map.Entry<String, Object> entry : info.entrySet()){
-//            Map singleInfo = (Map) entry.getValue();
-//            list.add((String) singleInfo.get("mother"));
-//        }
-//        Log.d( "Mother", list.toString());
-//    }
-
-    private void checkFamily(String idBird){
-//        String idFamily = dataBase.push().getKey();
-//        Family family = new Family(txtMotherId.getText().toString(), txtFatherId.getText().toString());
-//
-//        dataBase.child(TABLE_FAMILIES).child(idFamily).setValue(family);
-//        dataBase.child(TABLE_FAMILIES).child(idFamily).child(TABLE_BIRDS).child(idBird).setValue(true);
-//        dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_FAMILIES).child(idFamily).setValue(true);
-
+    private void checkFamily(){;
         DatabaseReference ref = dataBase.child(TABLE_FAMILIES);
         ref.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String id = collectFamily((Map<String, Object>) dataSnapshot.getValue());
-                        Log.d("Mother", "collectFamily-------------->" + id);
-
-                        if (collectFamily((Map<String, Object>) dataSnapshot.getValue()) == null) {
+                        if (!collectFamily((Map<String, Object>) dataSnapshot.getValue())) {
                             addFamily();
-                            Log.d("Mother", id+"Add New Family--------------------");
                         }else {
-                            Log.d("Mother", id+" Update Family Exist++++++++++++++++--------------------");
+                            getUpdateIdFamily();
                         }
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-
     }
     private void addFamily(){
         String idFamily = dataBase.push().getKey();
@@ -326,28 +312,50 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         dataBase.child(TABLE_FAMILIES).child(idFamily).child(TABLE_BIRDS).child(idBird).setValue(true);
         dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_FAMILIES).child(idFamily).setValue(true);
     }
-    private String collectFamily(Map<String,Object> item) {
+    private void addFamilyMember(String id){
+        HashMap<String, Object> member = new HashMap<>();
+        member.put(TABLE_FAMILIES + "/" + id + "/" + TABLE_BIRDS + "/" + idBird , "true");
+        dataBase.updateChildren(member);
+        dataBase.child(TABLE_BIRDS).child(idBird).child(TABLE_FAMILIES).child(id).setValue(true);
+    }
+    private void getUpdateIdFamily(){
+        DatabaseReference refId = dataBase.child(TABLE_FAMILIES);
+        refId.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (snapshot.child(BirdExtraDialogFragment.MOTHER_BIRD).getValue(String.class).equals(txtMotherId.getText().toString())) {
+                        idInfoFamily = snapshot.getKey().toString();
+                    }
+                }
+                if (idInfoFamily != null){
+                    addFamilyMember(idInfoFamily);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private Boolean collectFamily(Map<String,Object> item) {
         ArrayList<String> list = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : item.entrySet()){
-            Map singleFamily = (Map) entry.getValue();
-            if (singleFamily.get("mother").equals(txtMotherId.getText().toString())){
-                Log.d("Mother", "txtMotherId.getText().toString())/////////////////////////////-------------->" + txtMotherId.getText().toString());
-                //idCollect = entry.getKey();
-                //Log.d("Mother", "entry.getKey-------------->" + idCollect);
-                list.add(entry.getKey());
-            //}else {
-                //idCollect = "";
+        if (item != null) {
+            for (Map.Entry<String, Object> entry : item.entrySet()) {
+                Map singleFamily = (Map) entry.getValue();
+                if (singleFamily.get(BirdExtraDialogFragment.MOTHER_BIRD).equals(txtMotherId.getText().toString())
+                        && !singleFamily.get(BirdExtraDialogFragment.MOTHER_BIRD).equals(R.string.no_data)) {
+                    list.add(entry.getKey());
+                }
             }
         }
-        idCollect = "";
+        flagIdCollect = false;
         if (list.size() > 0) {
-            idCollect = "Exist";
+            flagIdCollect = true;
         }else {
-            idCollect = "";
+            flagIdCollect = false;
         }
-        Log.d("Mother", "list.size()-------------->" + list.size());
-        Log.d("Mother", "list.toString()-------------->" + list.toString());
-        return idCollect;
+        return flagIdCollect;
     }
 
     private void updateBird(){
