@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.andrey.firebirds.Repository.Repository;
 import com.example.andrey.firebirds.model.Bird;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -71,7 +72,7 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
     }
 
     private void updateUI() {
-        DatabaseReference refBirds = FirebaseDatabase.getInstance().getReference(BirdFragment.TABLE_BIRDS);
+        DatabaseReference refBirds = FirebaseDatabase.getInstance().getReference(Repository.TABLE_BIRDS);
         refBirds.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

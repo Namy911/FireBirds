@@ -12,14 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.andrey.firebirds.Repository.Repository;
+
 public class BirdExtraDialogFragment extends DialogFragment {
     private EditText edtName;
     public static final String EXTRA_INFO_BIRD = "name";
     public static final String ARG_PARENT_BIRD = "parent";
 
-    public static final String FATHER_BIRD = "father";
-    public static final String MOTHER_BIRD = "mother";
-    public static final String PAIR_BIRD = "pair";
+//    public static final String FATHER_BIRD = "father";
+//    public static final String MOTHER_BIRD = "mother";
+//    public static final String PAIR_BIRD = "pair";
 
     public static String member;
 
@@ -47,9 +49,10 @@ public class BirdExtraDialogFragment extends DialogFragment {
                     }
                 });
         switch(member){
-            case FATHER_BIRD : dialog.setTitle(R.string.dialog_father_bird);break;
-            case MOTHER_BIRD : dialog.setTitle(R.string.dialog_mather_bird);break;
-            case PAIR_BIRD   : dialog.setTitle(R.string.dialog_pair_bird);break;
+            //************************
+            case Repository.FATHER_BIRD : dialog.setTitle(R.string.dialog_father_bird);break;
+            case Repository.MOTHER_BIRD : dialog.setTitle(R.string.dialog_mather_bird);break;
+            case Repository.PAIR_BIRD   : dialog.setTitle(R.string.dialog_pair_bird);break;
 
         }
         return dialog.create();
