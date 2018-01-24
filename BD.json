@@ -59,3 +59,17 @@ Family ->
 	"Pair 3": ...
 	}
 }
+ ===============================================================================================================
+		Query
+ ===============================================================================================================
+ 
+ SELECT * FROM `db` WHERE `id` = 1 					 || rootRef.child('db').child('1')
+ SELECT * FROM `db` WHERE `name` = 'text' 			 || rootRef.child('db').orderByChild('name').equalTo('text')
+ SELECT * FROM `db` LIMIT 10						 ||	rootRef.child('db').orderByChild('name').limitToFirst(10)
+ SELECT * FROM `db` WHERE `name` LIKE '%d'			 ||	rootRef.child('db').orderByChild('name').startAt('d')
+ SELECT * FROM `db` WHERE `age` < 10				 ||	rootRef.child('db').orderByChild('name').endAt(9)
+ SELECT * FROM `db` WHERE `age` > 10				 ||	rootRef.child('db').orderByChild('name').startAt(11)
+ SELECT * FROM `db` WHERE `age` > 10 and `age` < 50  ||	rootRef.child('db').orderByChild('name').startAt(11).endAt(49)
+ 
+ 
+ 

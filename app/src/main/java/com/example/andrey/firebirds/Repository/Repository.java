@@ -25,17 +25,5 @@ public class Repository {
     public static final String FOREIGN_BIRD = "bird";
     public static final String FOREIGN_FAMILY = "family";
 
-    protected String idBird;
     protected DatabaseReference dataBase;
-
-
-//    public void setBirdId(){
-//        dataBase = FirebaseDatabase.getInstance().getReference();
-//        idBird = dataBase.push().getKey();
-//    }
-    public String getBirdId(){
-        return idBird;
-    }
-
-
 }

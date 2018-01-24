@@ -272,10 +272,12 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             saveData = true;
         }
         if (actionBird.equals(ADD_BIRD) && saveData == true) {
-            familyRep.setBird(edtName.getText().toString(), edtBirdBreed.getText().toString(), Long.parseLong(edtBirdBirth.getText().toString()), IdGender);
-            familyRep.checkFamily(txtMotherId.getText().toString(),txtFatherId.getText().toString());
 
-            pairRep.checkPair(txtPairId.getText().toString());
+            String id = birdRep.setBirdId();
+            birdRep.setBird(edtName.getText().toString(), edtBirdBreed.getText().toString(),
+                    Long.parseLong(edtBirdBirth.getText().toString()), IdGender, id);
+            familyRep.checkFamily(txtMotherId.getText().toString(),txtFatherId.getText().toString(), id);
+            pairRep.checkPair(txtPairId.getText().toString(), id);
 
             resetInfoBird(v);
         }

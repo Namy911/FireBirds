@@ -8,11 +8,24 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class BirdRepository extends Repository {
 
-    public void setBird( String name, String breed, Long birth, int gender){
-        dataBase = FirebaseDatabase.getInstance().getReference();
-        idBird = dataBase.push().getKey();
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                      -- Insert Bird --                                     //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Set id from bird
+    public String setBirdId(){
+        dataBase = FirebaseDatabase.getInstance().getReference();
+        String idBird = dataBase.push().getKey();
+        //Log.d(TAG, "setBirdId: Repo " +  idBird );
+        return idBird;
+    }
+
+    // Entry point
+    // Set Node(Table) Bird
+    public void setBird(String name, String breed, Long birth, int gender,  String id){
+        dataBase = FirebaseDatabase.getInstance().getReference();
         Bird bird = new Bird(name, breed, birth, gender);
-        dataBase.child(TABLE_BIRDS).child(idBird).setValue(bird);
+        dataBase.child(TABLE_BIRDS).child(id).setValue(bird);
     }
 }
