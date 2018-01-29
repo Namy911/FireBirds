@@ -10,7 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-public class DeleteDialogFragment extends DialogFragment {
+public class DialogDeleteFragment extends DialogFragment {
     public static final String EXTRA_DELETE = "DialogChoice";
     //public static final String ARG_DELETE = "DialogDelete";
     @NonNull
@@ -45,7 +45,7 @@ public class DeleteDialogFragment extends DialogFragment {
 //    public static DeleteDialogFragment newInstance() {
 //        Bundle args = new Bundle();
 //        args.putInt(ARG_DELETE, dialogDelAnswer);
-//        DeleteDialogFragment fragment = new DeleteDialogFragment();
+//        DialogDeleteFragment fragment = new DialogDeleteFragment();
 //        fragment.setArguments(args);
 //        return fragment;
 //    }

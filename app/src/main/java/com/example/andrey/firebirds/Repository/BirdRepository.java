@@ -17,7 +17,6 @@ public class BirdRepository extends Repository {
     public String setBirdId(){
         dataBase = FirebaseDatabase.getInstance().getReference();
         String idBird = dataBase.push().getKey();
-        //Log.d(TAG, "setBirdId: Repo " +  idBird );
         return idBird;
     }
 

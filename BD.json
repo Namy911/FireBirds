@@ -1,27 +1,59 @@
-Bird   -> 
-		id
-		name
-		breed
-		gender
-		date of birth
+	User   	-> 
+			id_user
+			id_collection
 		
-		id_pair
-		id_family
+Collection ->
+			id_collection
+			id_bird
+
+	Bird   	-> 
+			id
+			name
+			breed
+			gender
+			date of birth
 		
-Pair   ->
-		id_bird_m
-		id_bird_f
-		id_pair
+			id_pair
+			id_family
 		
-Family ->
-		id_mother
-		id_father
-		id_family
+	Pair   	->
+			id_bird_m
+			id_bird_f
+			id_pair
+		
+	Family 	->
+			id_mother
+			id_father
+			id_family
 
  ===============================================================================================================
 		JSON
  ===============================================================================================================
   {
+ -----------------------------------------------------
+| "Users":{
+|   "User 1":{
+|		name: "name"
+|		city: "city"
+|		country : "country"
+|		"Collections":{
+|			"Collection 1" : true
+|		}
+|		
+|	}
+| }
+|  "Collections":{
+|	"Collection 1":{
+|		"Users":{
+|			"User 1" : true
+|		}
+|		"Birds":{
+|			"Bird 1": true,
+|			"Bird 2": true,
+|		}
+|	}
+|}
+|-----------------------------------------------------
   "Birds":{
     "Bird 1":{
         "name":"name",
@@ -30,7 +62,12 @@ Family ->
         }
 		"Pairs" :{
 			"Pair 2":true
-		}
+		},
+-----------------------------------------------------		
+|		"Collections":{
+|			"collection 1": true
+|		}
+-----------------------------------------------------
     },
     "Bird 2": ...,
     "Bird 3": ...

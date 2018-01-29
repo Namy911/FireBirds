@@ -2,8 +2,10 @@ package com.example.andrey.firebirds;
 
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,7 +67,7 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
 
         btnAddBird = view.findViewById(R.id.floatBtnAdd);
         btnAddBird.setOnClickListener(this);
-        //Map<String, Bird> allInfoBirds = new HashMap<>();
+
 
         updateUI();
         return view;

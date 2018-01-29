@@ -22,23 +22,27 @@ public class FamilyRepository extends Repository {
     private String idInfoFamily;
     private String idMother, idFather, idSon;
 
+    public  String noData;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //                                  -- Insert Family --                                       //
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Entry point
-    public void checkFamily(String mother, String father, String son){
+    // If mother and father with that id exist do update else insert
+    // if insert check if fields isn't empty
+    public void checkFamily(final String mother, final String father, String son, String emptyString){
         idMother = mother;
         idFather = father;
         idSon = son;
-        //Log.d(TAG, "checkFamily: " + idSon);
+        noData = emptyString;
+
         dataBase = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference ref = dataBase.child(TABLE_FAMILIES);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (!collectFamily((Map<String, Object>) dataSnapshot.getValue())) {
+                        if (collectFamily((Map<String, Object>) dataSnapshot.getValue()) && !mother.equals(noData) && !father.equals(noData)) {
                             setFamily();
                             ref.removeEventListener(this);
                         }else {
@@ -65,6 +69,7 @@ public class FamilyRepository extends Repository {
                 }
                 if (idInfoFamily != null){
                     addFamilyMember(idInfoFamily);
+                    //Log.d(TAG, "onDataChange: update");
                 }
                 refId.removeEventListener(this);
             }
@@ -76,24 +81,22 @@ public class FamilyRepository extends Repository {
     }
 
     // Collect info: if mother have pair return  flag -> true, false
+    // Collect info: if mother not selected return  flag -> true, false
     private Boolean collectFamily(Map<String,Object> item) {
         ArrayList<String> list = new ArrayList<>();
         if (item != null) {
             for (Map.Entry<String, Object> entry : item.entrySet()) {
                 Map singleFamily = (Map) entry.getValue();
-                if (singleFamily.get(MOTHER_BIRD).equals(idMother)
-                        && !singleFamily.get(MOTHER_BIRD).equals(R.string.no_data)) {
+                if (singleFamily.get(MOTHER_BIRD).equals(idMother) && singleFamily.get(FATHER_BIRD).equals(idFather)){
                     list.add(entry.getKey());
                 }
             }
         }
 
-        flagIdCollect = false;
-
-        if (list.size() > 0) {
-            flagIdCollect = true;
-        }else {
+        if (list.size() != 0) {
             flagIdCollect = false;
+        }else{
+            flagIdCollect = true;
         }
         return flagIdCollect;
     }

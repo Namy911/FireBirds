@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 import com.example.andrey.firebirds.Repository.Repository;
 
-public class BirdExtraDialogFragment extends DialogFragment {
+public class DialogBirdExtraFragment extends DialogFragment {
     private EditText edtName;
     public static final String EXTRA_INFO_BIRD = "name";
     public static final String ARG_PARENT_BIRD = "parent";
@@ -25,10 +25,10 @@ public class BirdExtraDialogFragment extends DialogFragment {
 
     public static String member;
 
-    public static BirdExtraDialogFragment newInstance(String member) {
+    public static DialogBirdExtraFragment newInstance(String member) {
         Bundle args = new Bundle();
         args.putString(ARG_PARENT_BIRD, member);
-        BirdExtraDialogFragment fragment = new BirdExtraDialogFragment();
+        DialogBirdExtraFragment fragment = new DialogBirdExtraFragment();
         fragment.setArguments(args);
         return fragment;
     }

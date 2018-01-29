@@ -22,7 +22,6 @@ import com.example.andrey.firebirds.Repository.FamilyRepository;
 import com.example.andrey.firebirds.Repository.PairRepository;
 import com.example.andrey.firebirds.Repository.Repository;
 import com.example.andrey.firebirds.model.Bird;
-import com.example.andrey.firebirds.model.Pair;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,6 +62,8 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference dataBase;
     private DatabaseReference tableBirds;
 
+    private String emptyString;
+
     private FamilyRepository familyRep;
     private PairRepository pairRep;
     private BirdRepository birdRep;
@@ -81,6 +82,7 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         if (getArguments() != null) {
             actionBird = getArguments().getString(ADD_BIRD);
         }
+        emptyString = getResources().getString(R.string.no_data);
     }
 
     @Override
@@ -169,23 +171,21 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == REQUEST_DELETE && data.getExtras().getInt(DeleteDialogFragment.EXTRA_DELETE) == 1) {
+        if (requestCode == REQUEST_DELETE && data.getExtras().getInt(DialogDeleteFragment.EXTRA_DELETE) == 1) {
             dataBase.child(Repository.TABLE_BIRDS).child(actionBird).setValue(null);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_container, new BirdsListFragment())
                     .commit();
         }else if (requestCode == REQUEST_INFO_BIRD){
-            String value = data.getStringExtra(BirdExtraDialogFragment.EXTRA_INFO_BIRD);
-            switch (BirdExtraDialogFragment.member){
+            String value = data.getStringExtra(DialogBirdExtraFragment.EXTRA_INFO_BIRD);
+            switch (DialogBirdExtraFragment.member){
                 case Repository.PAIR_BIRD :
                     txtPair.setText(value);
                     getIdExtra(Repository.PAIR_BIRD, value);
                     break;
-                    //**************************
                 case Repository.FATHER_BIRD :
                     txtFather.setText(value);
-                    //****************
                     getIdExtra(Repository.FATHER_BIRD, value);
                     break;
                 case Repository.MOTHER_BIRD :
@@ -276,7 +276,7 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             String id = birdRep.setBirdId();
             birdRep.setBird(edtName.getText().toString(), edtBirdBreed.getText().toString(),
                     Long.parseLong(edtBirdBirth.getText().toString()), IdGender, id);
-            familyRep.checkFamily(txtMotherId.getText().toString(),txtFatherId.getText().toString(), id);
+            familyRep.checkFamily(txtMotherId.getText().toString(),txtFatherId.getText().toString(), id, emptyString);
             pairRep.checkPair(txtPairId.getText().toString(), id);
 
             resetInfoBird(v);
@@ -290,22 +290,22 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         //familyRep.updateBird();
         switch(v.getId()){
             case R.id.floatBtnDelete:
-                DialogFragment deleteDialog = new DeleteDialogFragment();
+                DialogFragment deleteDialog = new DialogDeleteFragment();
                 deleteDialog.setTargetFragment(BirdFragment.this, REQUEST_DELETE);
                 deleteDialog.show(getFragmentManager(), DIALOG_DELETE);
                 break;
             case R.id.img_mother:
-                DialogFragment motherBirdDialog = BirdExtraDialogFragment.newInstance(Repository.MOTHER_BIRD);
+                DialogFragment motherBirdDialog = DialogBirdExtraFragment.newInstance(Repository.MOTHER_BIRD);
                 motherBirdDialog.setTargetFragment(BirdFragment.this, REQUEST_INFO_BIRD);
                 motherBirdDialog.show(getFragmentManager(), DIALOG_INFO_BIRD);
                 break;
             case R.id.img_father:
-                DialogFragment fatherBirdDialog = BirdExtraDialogFragment.newInstance(Repository.FATHER_BIRD);
+                DialogFragment fatherBirdDialog = DialogBirdExtraFragment.newInstance(Repository.FATHER_BIRD);
                 fatherBirdDialog.setTargetFragment(BirdFragment.this, REQUEST_INFO_BIRD);
                 fatherBirdDialog.show(getFragmentManager(), DIALOG_INFO_BIRD);
                 break;
             case R.id.img_pair:
-                DialogFragment pairBirdDialog = BirdExtraDialogFragment.newInstance(Repository.PAIR_BIRD);
+                DialogFragment pairBirdDialog = DialogBirdExtraFragment.newInstance(Repository.PAIR_BIRD);
                 pairBirdDialog.setTargetFragment(BirdFragment.this, REQUEST_INFO_BIRD);
                 pairBirdDialog.show(getFragmentManager(), DIALOG_INFO_BIRD);
                 break;

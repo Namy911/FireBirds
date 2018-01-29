@@ -1,5 +1,7 @@
 package com.example.andrey.firebirds.Repository;
 
+import android.util.Log;
+
 import com.example.andrey.firebirds.model.Pair;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,6 +15,7 @@ public class PairRepository extends Repository{
 
     private static final String TAG = "Mother";
     private final int NO_RECORDS = 0;
+
     private String idFirstPair;
     private String idSecondPair;
     private String idPair;
@@ -29,31 +32,36 @@ public class PairRepository extends Repository{
     public void checkPair(String id, String idSecond){
         idFirstPair = id;
         idSecondPair = idSecond;
-        getBirdGender();
+        setPairGender();
     }
 
     // CheckBox parameter (int)gender
     // Set gender
-    protected void getBirdGender(){
+    protected void setPairGender(){
         dataBase = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference ref = dataBase.child(TABLE_BIRDS);
         ref.addValueEventListener(new ValueEventListener(){;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(idFirstPair).child(BIRD_GENDER).getValue() != null){
-                long gender = (long) dataSnapshot.child(idFirstPair).child(BIRD_GENDER).getValue();
+                // value != unknown
+                if (dataSnapshot.child(idFirstPair).child(BIRD_GENDER).getValue() != null) {
+                    long gender = (long) dataSnapshot.child(idFirstPair).child(BIRD_GENDER).getValue();
 
-                switch ((int)gender){
-                    case 1 : setGender(BIRD_MALE);
-                        ref.removeEventListener(this);
-
-                        break;
-                    case 2 : setGender(BIRD_FEMALE);
-                        ref.removeEventListener(this);
-                        break;
-                    default: setGender(BIRD_UNKNOWN);break;
+                    switch ((int) gender) {
+                        case 1:
+                            setPairNodes(BIRD_MALE);
+                            Log.d(TAG, "onDataChange: BIRD_MALE");
+                            break;
+                        case 2:
+                            setPairNodes(BIRD_FEMALE);
+                            Log.d(TAG, "onDataChange: BIRD_FEMALE");
+                            break;
+                        // Point - Dialog from warning: delete data //
+                        //default:
+                    }
+                    ref.removeEventListener(this);
                 }
-            }}
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -62,9 +70,9 @@ public class PairRepository extends Repository{
         });
     }
 
-    // Set Node(Table) Pair, set: male from editText, female from dialog
+    // Set Node(columns) Pair, set: male from editText, female from dialog
     // Otherwise set: female from editText, male from dialog
-    private void setGender(String gender){
+    private void setPairNodes(String gender){
         idPair = dataBase.push().getKey();
         Pair pair = new Pair();
 
@@ -75,7 +83,6 @@ public class PairRepository extends Repository{
             pair.setFemale(idSecondPair);
             pair.setMale(idFirstPair);
         }
-
         dataBase.child(TABLE_PAIRS).child(idPair).setValue(pair);
 
         checkForeignKeyPair(idFirstPair);
@@ -91,11 +98,12 @@ public class PairRepository extends Repository{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == NO_RECORDS){
                         setForeignKey(id);
+                    Log.d(TAG, "onDataChange:  == NO_RECORDS");
                         ref.removeEventListener(this);
                     }else if(dataSnapshot.getChildrenCount() > NO_RECORDS){
-                        // Point - Dialog from warning: delete data //
                         dataBase.child(TABLE_BIRDS).child(id).child(FOREIGN_PAIR).removeValue();
                         setForeignKey(id);
+                    Log.d(TAG, "onDataChange:  > NO_RECORDS");
                         ref.removeEventListener(this);
                     }
             }
