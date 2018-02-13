@@ -50,11 +50,11 @@ public class PairRepository extends Repository{
                     switch ((int) gender) {
                         case 1:
                             setPairNodes(BIRD_MALE);
-                            Log.d(TAG, "onDataChange: BIRD_MALE");
+                            //Log.d(TAG, "onDataChange: BIRD_MALE");
                             break;
                         case 2:
                             setPairNodes(BIRD_FEMALE);
-                            Log.d(TAG, "onDataChange: BIRD_FEMALE");
+                            //Log.d(TAG, "onDataChange: BIRD_FEMALE");
                             break;
                         // Point - Dialog from warning: delete data //
                         //default:
@@ -98,12 +98,12 @@ public class PairRepository extends Repository{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == NO_RECORDS){
                         setForeignKey(id);
-                    Log.d(TAG, "onDataChange:  == NO_RECORDS");
+                    //Log.d(TAG, "onDataChange:  == NO_RECORDS");
                         ref.removeEventListener(this);
                     }else if(dataSnapshot.getChildrenCount() > NO_RECORDS){
                         dataBase.child(TABLE_BIRDS).child(id).child(FOREIGN_PAIR).removeValue();
                         setForeignKey(id);
-                    Log.d(TAG, "onDataChange:  > NO_RECORDS");
+                    //Log.d(TAG, "onDataChange:  > NO_RECORDS");
                         ref.removeEventListener(this);
                     }
             }

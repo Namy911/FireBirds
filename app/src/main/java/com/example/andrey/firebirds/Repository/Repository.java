@@ -12,6 +12,8 @@ public class Repository {
     public static final String TABLE_FAMILIES = "families";
     public static final String TABLE_BIRDS = "birds";
     public static final String TABLE_PAIRS = "pairs";
+    public static final String TABLE_COLLECTIONS = "collections";
+    public static final String TABLE_USERS = "users";
 
     public static final String FATHER_BIRD = "father";
     public static final String MOTHER_BIRD = "mother";
@@ -21,6 +23,8 @@ public class Repository {
     public static final String BIRD_MALE = "male";
     public static final String BIRD_UNKNOWN = "unknown";
 
+    public static final String FOREIGN_USER = "user";
+    public static final String FOREIGN_COLLECTION = "CollectionBirds";
     public static final String FOREIGN_PAIR = "pair";
     public static final String FOREIGN_BIRD = "bird";
     public static final String FOREIGN_FAMILY = "family";

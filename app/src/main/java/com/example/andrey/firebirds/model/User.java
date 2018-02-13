@@ -1,22 +1,23 @@
 package com.example.andrey.firebirds.model;
 
 public class User {
-    private String name;
+    private String login;
     private String country;
     private String city;
 
-    public User(String name, String country, String city) {
-        this.name = name;
+    public User(){}
+    public User(String login, String country, String city) {
+        this.login = login;
         this.country = country;
         this.city = city;
     }
 
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String name) {
+        this.login = name;
     }
 
     public String getCountry() {

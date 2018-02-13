@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SectionPageAdapter sectionPageAdapter;
     private ViewPager viewPager;
-    private final  String TAB_NAME_1 = "My Collection";
+    private final  String TAB_NAME_1 = "My Collections";
     private final  String TAB_NAME_2 = "Other Collections";
     private final  String TAB_NAME_3 = "My Account";
 

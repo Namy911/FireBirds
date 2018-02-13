@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,19 +71,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }
 
     }
+
     private void register() {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, RegisterFragment.newInstance())
+                .replace(R.id.account_container, RegisterFragment.newInstance())
                 .commit();
-    }
-    private void login() {
-        String login = mLogin.getText().toString().trim();
-        if (login.equals("da") && Integer.parseInt(mPass.getText().toString().trim())== 1){
-            redirect(login);
-        }else {
-            Toast.makeText(getActivity(), " Logare Eror", Toast.LENGTH_SHORT).show();
-        }
-
     }
     private void loginWithEmail(){
 //        String login = mLogin.getText().toString();
@@ -98,8 +89,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            redirect(user.getEmail());
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(getActivity(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -116,7 +107,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                redirect("Facebook" + loginResult.getAccessToken());
+                //redirect("Facebook" + loginResult.getAccessToken());
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
 
             @Override
@@ -126,7 +119,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onError(FacebookException exception) {
-                redirect("FacebookException" + exception.getMessage());
+                //redirect("FacebookException" + exception.getMessage());
             }
         });
     }

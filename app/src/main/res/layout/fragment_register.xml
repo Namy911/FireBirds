@@ -1,13 +1,22 @@
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/container"
-    android:layout_marginTop="180dp"
+    android:layout_marginTop="70dp"
     tools:context="com.example.andrey.firebirds.RegisterFragment">
-
+    <!--<fragment-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_below="@+id/register"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:id="@+id/map"-->
+        <!--tools:context=".RegisterFragment"-->
+        <!--android:name="com.google.android.gms.maps.SupportMapFragment" />-->
     <LinearLayout
+        android:id="@+id/text45"
         android:layout_width="250dp"
         android:layout_marginLeft="65dp"
         android:orientation="horizontal"
@@ -16,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="@string/app_name"
+            android:text="@string/reg_name"
             android:layout_weight="0.70"/>
         <EditText
             android:layout_width="match_parent"
@@ -35,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="@string/app_name"
+            android:text="@string/reg_pass"
             android:layout_weight="0.7"/>
         <EditText
             android:layout_width="match_parent"
@@ -53,7 +62,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
+            android:text="@string/reg_pass_confirm"
             android:gravity="right"
             android:layout_weight="0.7"/>
         <EditText
@@ -63,12 +72,52 @@
             android:layout_weight="0.3"
             android:gravity="left"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_marginLeft="65dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="150dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reg_country"
+            android:gravity="right"
+            android:layout_weight="0.7"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reg_country"
+            android:layout_weight="0.3"
+            android:gravity="left"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_marginLeft="65dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="200dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reg_city"
+            android:gravity="right"
+            android:layout_weight="0.7"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reg_city"
+            android:layout_weight="0.3"
+            android:gravity="left"/>
+    </LinearLayout>
+
+
     <Button
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_register"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="280dp"
         android:text="@string/btn_register"/>
     <Button
         android:layout_width="wrap_content"

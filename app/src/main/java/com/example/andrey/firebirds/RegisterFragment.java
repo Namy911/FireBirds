@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.andrey.firebirds.Repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,17 +21,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.concurrent.Executor;
-
 public class RegisterFragment extends Fragment implements View.OnClickListener {
-    private EditText mLogin, mPass, mConfPass;
-    private Button mRegister;
+    private EditText login, pass, confPass, city, country;
+    private Button btnRegister, btnBack;
     private DatabaseReference myRef;
 
     private FirebaseAuth mAuth;
+    private UserRepository userRep;
 
-    private DatabaseReference mDataBase;
+    //private DatabaseReference dataBase;
     private static final String TAG = "EmailPassword";
+
 
     public static RegisterFragment newInstance() {
         RegisterFragment fragment = new RegisterFragment();
@@ -41,16 +41,24 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userRep  = new UserRepository();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_register, container, false);
-        mConfPass = view.findViewById(R.id.reg_conf_pass);
-        mLogin = view.findViewById(R.id.reg_login);
-        mPass = view.findViewById(R.id.reg_pass);
-        mRegister = view.findViewById(R.id.btn_register);
-        mRegister.setOnClickListener(this);
+
+        login = view.findViewById(R.id.reg_login);
+        confPass = view.findViewById(R.id.reg_conf_pass);
+        pass = view.findViewById(R.id.reg_pass);
+        city = view.findViewById(R.id.reg_city);
+        country = view.findViewById(R.id.reg_country);
+
+        btnRegister = view.findViewById(R.id.btn_register);
+        btnRegister.setOnClickListener(this);
+
+        btnBack = view.findViewById(R.id.btn_home);
+        btnBack.setOnClickListener(this);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -63,17 +71,20 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn_register:
                 register();
-                sendEmailVerification();
+                //sendEmailVerification();
                 break;
             case R.id.btn_home:
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.account_container, new LoginFragment())
+                        .commit();
                 break;
         }
     }
 
     private void register() {
-        String login = mLogin.getText().toString();
-        String pass = mPass.getText().toString();
-        String confPass = mConfPass.getText().toString();
+        final String login = this.login.getText().toString();
+        String pass = this.pass.getText().toString();
+        String confPass = this.confPass.getText().toString();
         if (pass.equals(confPass)) {
             mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(login, pass)
@@ -81,10 +92,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
+                                FirebaseUser userData = mAuth.getCurrentUser();
+                                String id = userData.getUid();
 
+//                                getActivity().getSupportFragmentManager().beginTransaction()
+//                                        .replace(R.id.main_container, BirdsListFragment.newInstance(user.getEmail()))
+//                                        .commit();
+                                userRep.addUserData(id, login ,city.getText().toString(), country.getText().toString());
                                 getActivity().getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.main_container, BirdsListFragment.newInstance(user.getEmail()))
+                                        .replace(R.id.account_container, new LoginFragment())
                                         .commit();
                                 Toast.makeText(getActivity(), "Authentication Successful.",
                                         Toast.LENGTH_SHORT).show();

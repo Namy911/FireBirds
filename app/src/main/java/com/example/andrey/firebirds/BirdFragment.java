@@ -18,10 +18,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.andrey.firebirds.Repository.BirdRepository;
+import com.example.andrey.firebirds.Repository.CollectionRepository;
 import com.example.andrey.firebirds.Repository.FamilyRepository;
 import com.example.andrey.firebirds.Repository.PairRepository;
 import com.example.andrey.firebirds.Repository.Repository;
 import com.example.andrey.firebirds.model.Bird;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,9 +67,11 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
 
     private String emptyString;
 
+    private String userId;
     private FamilyRepository familyRep;
     private PairRepository pairRep;
     private BirdRepository birdRep;
+    private CollectionRepository collectionRep;
 
     public static BirdFragment newInstance(String action) {
         BirdFragment fragment = new BirdFragment();
@@ -137,8 +142,20 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         familyRep  = new FamilyRepository();
         pairRep    = new PairRepository();
         birdRep    = new BirdRepository();
+        collectionRep    = new CollectionRepository();
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userId = user.getUid();
+        } else {
+            // No user is signed in
+        }
     }
 
     private void updateBirdData(){
@@ -273,11 +290,15 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         }
         if (actionBird.equals(ADD_BIRD) && saveData == true) {
 
-            String id = birdRep.setBirdId();
+            String birdId = birdRep.setBirdId();
+            String collectionId = collectionRep.setCollectionId();
+
             birdRep.setBird(edtName.getText().toString(), edtBirdBreed.getText().toString(),
-                    Long.parseLong(edtBirdBirth.getText().toString()), IdGender, id);
-            familyRep.checkFamily(txtMotherId.getText().toString(),txtFatherId.getText().toString(), id, emptyString);
-            pairRep.checkPair(txtPairId.getText().toString(), id);
+                    Long.parseLong(edtBirdBirth.getText().toString()), IdGender, birdId);
+            collectionRep.addCollection(collectionId, userId ,birdId);
+            //Log.d(TAG, "addBirdInfo: " + userId);
+            familyRep.checkFamily(txtMotherId.getText().toString(),txtFatherId.getText().toString(), birdId, emptyString);
+            pairRep.checkPair(txtPairId.getText().toString(), birdId);
 
             resetInfoBird(v);
         }
