@@ -70,7 +70,7 @@ public class CollectionRepository extends Repository {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (value != null) {
             for (Map.Entry<String, String> entry : value.entrySet()) {
-                Log.d(TAG, "collectInfo: Fore " +entry.getValue() );
+                //Log.d(TAG, "collectInfo: Fore " +entry.getValue() );
 
             }
 

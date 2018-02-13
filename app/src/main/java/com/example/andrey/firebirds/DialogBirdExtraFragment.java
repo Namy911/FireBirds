@@ -14,10 +14,15 @@ import android.widget.EditText;
 
 import com.example.andrey.firebirds.Repository.Repository;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DialogBirdExtraFragment extends DialogFragment {
-    private EditText edtName;
+
     public static final String EXTRA_INFO_BIRD = "name";
     public static final String ARG_PARENT_BIRD = "parent";
+
+    @BindView(R.id.edt_dialog_name) EditText edtName;
 
 //    public static final String FATHER_BIRD = "father";
 //    public static final String MOTHER_BIRD = "mother";
@@ -38,7 +43,8 @@ public class DialogBirdExtraFragment extends DialogFragment {
         member = getArguments().getString(ARG_PARENT_BIRD);
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_bird_extra, null);
-        edtName = view.findViewById(R.id.edt_dialog_name);
+        ButterKnife.bind(this, view);
+        //edtName = view.findViewById(R.id.edt_dialog_name);
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity())
                 .setView(view)

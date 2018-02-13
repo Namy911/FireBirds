@@ -35,32 +35,41 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class BirdFragment extends Fragment implements View.OnClickListener {
 
     private String TAG = "Mother";
 
     private static final String DIALOG_DELETE = "DialogDelete";
     private static final String DIALOG_INFO_BIRD = "DialogInfoBird";
+    public static final String ADD_BIRD = "insert";
     private static final int REQUEST_DELETE = 0;
     private static final int REQUEST_INFO_BIRD = 1;
 
-    public static final String ADD_BIRD = "insert";
+    @BindView(R.id.floatBtnSave) FloatingActionButton btn_action_bird;
+    @BindView(R.id.floatBtnDelete) FloatingActionButton btn_delete_bird;
+    @BindView(R.id.rad_gr__gender) RadioGroup radioGroupGender;
+    @BindView(R.id.edt_bird_name) EditText edtName;
+    @BindView(R.id.edt_bird_breed) EditText edtBirdBreed;
+    @BindView(R.id.edt_birth) EditText edtBirdBirth;
+    @BindView(R.id.img_pair) ImageView imgPair;
+    @BindView(R.id.img_father) ImageView imgFather;
+    @BindView(R.id.img_mother) ImageView imgMother;
+    @BindView(R.id.txt_pair_name) TextView txtPair;
+    @BindView(R.id.txt_mother_name) TextView txtMother;
+    @BindView(R.id.txt_father_name) TextView txtFather;
+    @BindView(R.id.txt_pair_id) TextView txtPairId;
+    @BindView(R.id.txt_mother_id) TextView txtMotherId;
+    @BindView(R.id.txt_father_id) TextView txtFatherId;
 
     private String actionBird;
     private Boolean saveData = false;
 
-    private FloatingActionButton btn_action_bird;
-    private FloatingActionButton btn_delete_bird;
-
-    private RadioGroup radioGroupGender;
     int IdGender;
     private Bird updateBird;
-    private EditText edtName;
-    private EditText edtBirdBreed;
-    private EditText edtBirdBirth;
-    private ImageView imgPair, imgFather, imgMother;
-    private TextView txtPair, txtMother, txtFather;
-    private TextView txtPairId, txtMotherId, txtFatherId;
 
     private DatabaseReference dataBase;
     private DatabaseReference tableBirds;
@@ -93,12 +102,13 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_bird, container, false);
+        ButterKnife.bind(this, view);
         dataBase = FirebaseDatabase.getInstance().getReference();
         tableBirds = dataBase.child(Repository.TABLE_BIRDS);
 //        tableFamilies = dataBase.child(TABLE_FAMILIES);
 //        tablePairs = dataBase.child(TABLE_PAIRS);
 
-        edtName =  view.findViewById(R.id.edt_bird_name);
+        //edtName =  view.findViewById(R.id.edt_bird_name);
 //        edtName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
 //            public void onFocusChange(View v, boolean hasFocus) {
@@ -108,28 +118,27 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
 //                }
 //            }
 //        });
-        edtBirdBreed =  view.findViewById(R.id.edt_bird_breed);
-        edtBirdBirth =  view.findViewById(R.id.edt_birth);
-        btn_action_bird = view.findViewById(R.id.floatBtnSave);
-        btn_delete_bird = view.findViewById(R.id.floatBtnDelete);
-        radioGroupGender = view.findViewById(R.id.rad_gr__gender);
-        radioGroupGender = view.findViewById(R.id.rad_gr__gender);
+        //edtBirdBreed =  view.findViewById(R.id.edt_bird_breed);
+        //edtBirdBirth =  view.findViewById(R.id.edt_birth);
+        //btn_action_bird = view.findViewById(R.id.floatBtnSave);
+        //btn_delete_bird = view.findViewById(R.id.floatBtnDelete);
+        //radioGroupGender = view.findViewById(R.id.rad_gr__gender);
+        //radioGroupGender = view.findViewById(R.id.rad_gr__gender);
+        //imgPair = view.findViewById(R.id.img_pair);
+        //imgFather = view.findViewById(R.id.img_father);
+        //imgMother = view.findViewById(R.id.img_mother);
+//        txtPair = view.findViewById(R.id.txt_pair_name);
+//        txtMother = view.findViewById(R.id.txt_mother_name);
+//        txtFather = view.findViewById(R.id.txt_father_name);
+//        txtPairId = view.findViewById(R.id.txt_pair_id);
+//        txtMotherId = view.findViewById(R.id.txt_mother_id);
+//        txtFatherId = view.findViewById(R.id.txt_father_id);
 
-        imgPair = view.findViewById(R.id.img_pair);
-        imgFather = view.findViewById(R.id.img_father);
-        imgMother = view.findViewById(R.id.img_mother);
-        txtPair = view.findViewById(R.id.txt_pair_name);
-        txtMother = view.findViewById(R.id.txt_mother_name);
-        txtFather = view.findViewById(R.id.txt_father_name);
-        txtPairId = view.findViewById(R.id.txt_pair_id);
-        txtMotherId = view.findViewById(R.id.txt_mother_id);
-        txtFatherId = view.findViewById(R.id.txt_father_id);
-
-        btn_action_bird.setOnClickListener(this);
-        btn_delete_bird.setOnClickListener(this);
-        imgPair.setOnClickListener(this);
-        imgFather.setOnClickListener(this);
-        imgMother.setOnClickListener(this);
+//        btn_action_bird.setOnClickListener(this);
+//        btn_delete_bird.setOnClickListener(this);
+//        imgPair.setOnClickListener(this);
+//        imgFather.setOnClickListener(this);
+//        imgMother.setOnClickListener(this);
 
         if (actionBird.equals(ADD_BIRD)) {
             btn_delete_bird.setVisibility(View.GONE);
@@ -305,7 +314,8 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         saveData = false;
     }
 
-    @Override
+    @OnClick({R.id.floatBtnDelete, R.id.floatBtnSave,
+                R.id.img_mother, R.id.img_father, R.id.img_pair})
     public void onClick(View v) {
         addBirdInfo(v);
         //familyRep.updateBird();

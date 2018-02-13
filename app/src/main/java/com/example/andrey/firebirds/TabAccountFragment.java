@@ -3,7 +3,6 @@ package com.example.andrey.firebirds;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,13 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -27,11 +26,15 @@ import com.google.firebase.auth.FirebaseUser;
 public class TabAccountFragment extends Fragment implements View.OnClickListener{
 
     private static final String TAG = "Mother";
-    private Button button;
-    TextView idUser;
-    String email;
-    String uid;
+
+    @BindView(R.id.logout) Button btnLogout;
+    @BindView(R.id.user_id)TextView idUser;
+    @BindView(R.id.user_email) TextView userEemail;
+
+    private String email;
+    private String uid;
     private FirebaseAuth mAuth;
+
     public TabAccountFragment() {
         // Required empty public constructor
     }
@@ -51,13 +54,14 @@ public class TabAccountFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab_account, container, false);
-        idUser = ((TextView) view.findViewById(R.id.user_id));
+        ButterKnife.bind(this, view);
+        //idUser = ((TextView) view.findViewById(R.id.user_id));
         idUser.setText(uid);
-        Log.d(TAG, "onCreateView: " + email + uid);
-        TextView userEemail = ((TextView) view.findViewById(R.id.user_email));
+        //Log.d(TAG, "onCreateView: " + email + uid);
+        //TextView userEemail = ((TextView) view.findViewById(R.id.user_email));
         userEemail.setText(email);
-        button = view.findViewById(R.id.logout);
-        button.setOnClickListener(this);
+        //btnLogout = view.findViewById(R.id.logout);
+        btnLogout.setOnClickListener(this);
         return view;
     }
 
@@ -66,19 +70,17 @@ public class TabAccountFragment extends Fragment implements View.OnClickListener
         super.onStart();
     }
 
-    @Override
+    @OnClick(R.id.logout)
     public void onClick(View v) {
         FirebaseAuth.getInstance().signOut();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
-            Log.d(TAG, "onClick: user" + user.getUid());
+            //Log.d(TAG, "onClick: user" + user.getUid());
         } else {
             // No user is signed in
             Intent  intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         }
-
-        
     }
 }

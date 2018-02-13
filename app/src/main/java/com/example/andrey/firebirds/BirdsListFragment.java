@@ -27,16 +27,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class BirdsListFragment extends Fragment implements View.OnClickListener{
 
+    @BindView(R.id.floatBtnAdd) FloatingActionButton btnAddBird;
+    @BindView(R.id.recy_birds_list) RecyclerView recyBirds;
+
     public final static String LOGIN = "login_";
-    private FloatingActionButton btnAddBird;
 
     private FirebaseAuth mAuth;
     private DatabaseReference dataBase;
 
     private RecyclerView.Adapter adapter ;
-    private RecyclerView recyBirds;
     Map<String, Bird> allInfoBirds;
     String id;
 
@@ -48,25 +53,17 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
         return fragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        if (getArguments().getString(LOGIN) != null){
-//
-//        }
-
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_birds_lis, container, false);
-        recyBirds = view.findViewById(R.id.recy_birds_list);
+        ButterKnife.bind(this, view);
+        //recyBirds = view.findViewById(R.id.recy_birds_list);
         recyBirds.setLayoutManager(new LinearLayoutManager(getActivity()));
         dataBase = FirebaseDatabase.getInstance().getReference();
 
-        btnAddBird = view.findViewById(R.id.floatBtnAdd);
-        btnAddBird.setOnClickListener(this);
+        //btnAddBird = view.findViewById(R.id.floatBtnAdd);
+        //btnAddBird.setOnClickListener(this);
 
 
         updateUI();
@@ -97,6 +94,7 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
+
     private void signOut(){
         //FirebaseAuth.getInstance().signOut();
         mAuth.signOut();
@@ -106,6 +104,7 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
         Toast.makeText(getActivity(), "Log Out.",
                 Toast.LENGTH_SHORT).show();
     }
+
     private void birdAction(String action){
         getActivity()
                 .getSupportFragmentManager()
@@ -113,7 +112,8 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
                 .replace(R.id.main_container, BirdFragment.newInstance(action))
                 .commit();
     }
-    @Override
+
+    @OnClick(R.id.floatBtnAdd)
     public void onClick(View v) {
         birdAction(BirdFragment.ADD_BIRD);
     }

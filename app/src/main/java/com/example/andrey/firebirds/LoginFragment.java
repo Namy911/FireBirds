@@ -24,10 +24,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class LoginFragment extends Fragment implements View.OnClickListener{
-    private Button mSingIn;
-    private EditText mLogin, mPass;
-    private TextView mRegister;
+
+    @BindView(R.id.btn_sing_in) Button mSingIn;
+    @BindView(R.id.edt_login) EditText mLogin;
+    @BindView(R.id.edt_pass) EditText mPass;
+    @BindView(R.id.register) TextView mRegister;
 
     private CallbackManager callbackManager;
 
@@ -37,15 +43,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        ButterKnife.bind(this, view);
 
+        //mLogin = view.findViewById(R.id.edt_login);
+        //mPass = view.findViewById(R.id.edt_pass);
 
-        mLogin = view.findViewById(R.id.edt_login);
-        mPass = view.findViewById(R.id.edt_pass);
-
-        mRegister = view.findViewById(R.id.register);
-        mRegister.setOnClickListener(this);
-        mSingIn = view.findViewById(R.id.btn_sing_in);
-        mSingIn.setOnClickListener(this);
+        //mRegister = view.findViewById(R.id.register);
+        //mRegister.setOnClickListener(this);
+        //mSingIn = view.findViewById(R.id.btn_sing_in);
+        //mSingIn.setOnClickListener(this);
 
         loginWithFacebook((LoginButton) view.findViewById(R.id.login_button));
 
@@ -58,7 +64,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-    @Override
+
+    @OnClick({R.id.btn_sing_in, R.id.register })
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_sing_in :
