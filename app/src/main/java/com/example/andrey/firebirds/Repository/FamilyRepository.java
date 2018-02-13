@@ -28,9 +28,16 @@ public class FamilyRepository extends Repository {
     //                                  -- Insert Family --                                       //
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Entry point
-    // If mother and father with that id exist do update else insert
-    // if insert check if fields isn't empty
+    /**
+     * Entry point
+     * If mother and father with that id exist do update else insert
+     * if insert check if fields isn't empty
+     * @param mother
+     * @param father
+     * @param son
+     * @param emptyString
+     */
+
     public void checkFamily(final String mother, final String father, String son, String emptyString){
         idMother = mother;
         idFather = father;
