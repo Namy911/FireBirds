@@ -46,8 +46,15 @@ public class TabAccountFragment extends Fragment implements View.OnClickListener
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        uid = user.getUid();
-        email = user.getEmail();
+        if (user != null){
+            uid = user.getUid();
+            email = user.getEmail();
+        }else {
+            uid = "FB";
+            email = "FB-E";
+        }
+
+
     }
 
     @Override
@@ -55,13 +62,9 @@ public class TabAccountFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab_account, container, false);
         ButterKnife.bind(this, view);
-        //idUser = ((TextView) view.findViewById(R.id.user_id));
+
         idUser.setText(uid);
-        //Log.d(TAG, "onCreateView: " + email + uid);
-        //TextView userEemail = ((TextView) view.findViewById(R.id.user_email));
         userEemail.setText(email);
-        //btnLogout = view.findViewById(R.id.logout);
-        btnLogout.setOnClickListener(this);
         return view;
     }
 

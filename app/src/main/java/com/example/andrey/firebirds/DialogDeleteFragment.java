@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class DialogDeleteFragment extends DialogFragment {
     public static final String EXTRA_DELETE = "DialogChoice";
-    //public static final String ARG_DELETE = "DialogDelete";
+    public static final String ARG_DELETE = "DialogDelete";
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

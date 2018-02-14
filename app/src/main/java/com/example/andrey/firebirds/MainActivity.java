@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private final  String TAB_NAME_2 = "Other Collections";
     private final  String TAB_NAME_3 = "My Account";
 
-    //public final static String EXTRA_USER_ID = "uid";
-
     @BindView(R.id.container) ViewPager viewPager;
     @BindView(R.id.tabs) TabLayout tabLayout;
 
@@ -48,10 +46,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         sectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
-        //viewPager = findViewById(R.id.container);
         setupViewPager(viewPager);
-
-        //TabLayout tabLayout = ((TabLayout) findViewById(R.id.tabs));
         tabLayout.setupWithViewPager(viewPager);
 
         mAuth = FirebaseAuth.getInstance();
@@ -60,22 +55,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String login = "t@t.ru";
-        String pass = "123456";
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(login, pass)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //Log.d(TAG, "onComplete: "+ user.getUid());
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+//        String login = "t@t.ru";
+//        String pass = "123456";
+//        mAuth = FirebaseAuth.getInstance();
+//        mAuth.signInWithEmailAndPassword(login, pass)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            //Log.d(TAG, "onComplete: "+ user.getUid());
+//                        } else {
+//                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
     }
 
     public void setupViewPager(ViewPager viewPager){
@@ -94,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         public SectionPageAdapter(FragmentManager fm) {
             super(fm);
         }
+
         public void addFragment(Fragment fragment, String title){
             fragmentsList.add(fragment);
             fragmentsTitle.add(title);

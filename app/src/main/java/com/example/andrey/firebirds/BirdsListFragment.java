@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BirdsListFragment extends Fragment implements View.OnClickListener{
+public class BirdsListFragment extends Fragment{
 
     @BindView(R.id.floatBtnAdd) FloatingActionButton btnAddBird;
     @BindView(R.id.recy_birds_list) RecyclerView recyBirds;
@@ -58,13 +58,9 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_birds_lis, container, false);
         ButterKnife.bind(this, view);
-        //recyBirds = view.findViewById(R.id.recy_birds_list);
+
         recyBirds.setLayoutManager(new LinearLayoutManager(getActivity()));
         dataBase = FirebaseDatabase.getInstance().getReference();
-
-        //btnAddBird = view.findViewById(R.id.floatBtnAdd);
-        //btnAddBird.setOnClickListener(this);
-
 
         updateUI();
         return view;
@@ -117,6 +113,7 @@ public class BirdsListFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         birdAction(BirdFragment.ADD_BIRD);
     }
+
     private class BirdsHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
         private TextView birdName, birdId;

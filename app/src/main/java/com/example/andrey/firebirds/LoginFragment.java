@@ -1,7 +1,6 @@
 package com.example.andrey.firebirds;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,31 +12,36 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.andrey.firebirds.contract.AuthContract;
+import com.example.andrey.firebirds.presenter.AuthPresenter;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginFragment extends Fragment implements View.OnClickListener{
+public class LoginFragment extends Fragment implements AuthContract.LoginDisplay,
+        AuthContract.LoginInput {
 
-    @BindView(R.id.btn_sing_in) Button mSingIn;
-    @BindView(R.id.edt_login) EditText mLogin;
-    @BindView(R.id.edt_pass) EditText mPass;
-    @BindView(R.id.register) TextView mRegister;
+    private static final String TAG = "LoginFragment";
+
+    @BindView(R.id.btn_sing_in) Button btnSingIn;
+    @BindView(R.id.google_plus) Button btnGoogle;
+    @BindView(R.id.btn_facebook_login) LoginButton btnFacebook;
+    @BindView(R.id.edt_login) EditText edtLogin;
+    @BindView(R.id.edt_pass) EditText edtPass;
+    @BindView(R.id.register) TextView edtRegister;
+    @BindView(R.id.forgot_pass) TextView edtForgotPass;
 
     private CallbackManager callbackManager;
 
-    private FirebaseAuth mAuth;
+//    private AuthContract.AuthPresenter loginPresenter;
+    private AuthContract.LoginPresenter presenter;
+
+//    public void setPresenter(AuthContract.AuthPresenter loginPresenter){
+//        this.loginPresenter = loginPresenter;
+//    }
 
     @Nullable
     @Override
@@ -45,15 +49,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
 
-        //mLogin = view.findViewById(R.id.edt_login);
-        //mPass = view.findViewById(R.id.edt_pass);
+        presenter = new AuthPresenter(this, this);
 
-        //mRegister = view.findViewById(R.id.register);
-        //mRegister.setOnClickListener(this);
-        //mSingIn = view.findViewById(R.id.btn_sing_in);
-        //mSingIn.setOnClickListener(this);
-
-        loginWithFacebook((LoginButton) view.findViewById(R.id.login_button));
+        btnFacebook.setFragment(this);
+        callbackManager = CallbackManager.Factory.create(); // <-------
+        presenter.loginWithFacebook(btnFacebook, callbackManager);
 
         return view;
     }
@@ -65,75 +65,60 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    @OnClick({R.id.btn_sing_in, R.id.register })
+    @OnClick({R.id.btn_sing_in, R.id.register,
+                R.id.google_plus, R.id.forgot_pass })
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_sing_in :
-                loginWithEmail();
+                presenter.loginWithEmail();
             break;
             case R.id.register :
-                register();
+                openRegisterPage();
+                break;
+            case R.id.google_plus :
+                break;
+            case R.id.forgot_pass :
+                openForgotPassPage();
                 break;
             default: Toast.makeText(getActivity(), " Defaoult Logare", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private void register() {
+    @Override
+    public void openMainPage() {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openRegisterPage() {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.account_container, RegisterFragment.newInstance())
                 .commit();
     }
-    private void loginWithEmail(){
-//        String login = mLogin.getText().toString();
-//        String pass = mPass.getText().toString();
 
-        String login = "t@t.ru";
-        String pass = "123456";
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(login, pass)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void loginWithFacebook(LoginButton loginButton){
-        callbackManager = CallbackManager.Factory.create();
-        loginButton.setReadPermissions("email");
-        loginButton.setFragment(this);
-
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                //redirect("Facebook" + loginResult.getAccessToken());
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                //redirect("FacebookException" + exception.getMessage());
-            }
-        });
-    }
-    private void redirect(String login){
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, BirdsListFragment.newInstance(login))
+    @Override
+    public void openForgotPassPage() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.account_container, new ForgotPassFragment())
                 .commit();
     }
 
+    @Override
+    public void toastErrorLogin() {
+        Toast.makeText(getActivity(), "Authentication failed.",
+        Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public String getLogin() {
+        return edtLogin.getText().toString().trim();
+    }
+
+    @Override
+    public String getPassword() {
+        return edtPass.getText().toString().trim();
+    }
 }

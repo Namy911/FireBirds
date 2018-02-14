@@ -39,13 +39,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BirdFragment extends Fragment implements View.OnClickListener {
+public class BirdFragment extends Fragment{
 
     private String TAG = "Mother";
 
     private static final String DIALOG_DELETE = "DialogDelete";
     private static final String DIALOG_INFO_BIRD = "DialogInfoBird";
     public static final String ADD_BIRD = "insert";
+
     private static final int REQUEST_DELETE = 0;
     private static final int REQUEST_INFO_BIRD = 1;
 
@@ -105,40 +106,6 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, view);
         dataBase = FirebaseDatabase.getInstance().getReference();
         tableBirds = dataBase.child(Repository.TABLE_BIRDS);
-//        tableFamilies = dataBase.child(TABLE_FAMILIES);
-//        tablePairs = dataBase.child(TABLE_PAIRS);
-
-        //edtName =  view.findViewById(R.id.edt_bird_name);
-//        edtName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus){
-//                    new Repository().setBirdId();
-//                    Log.d("Mother", "111111111111111111111111111" +  new Repository().getBirdId());
-//                }
-//            }
-//        });
-        //edtBirdBreed =  view.findViewById(R.id.edt_bird_breed);
-        //edtBirdBirth =  view.findViewById(R.id.edt_birth);
-        //btn_action_bird = view.findViewById(R.id.floatBtnSave);
-        //btn_delete_bird = view.findViewById(R.id.floatBtnDelete);
-        //radioGroupGender = view.findViewById(R.id.rad_gr__gender);
-        //radioGroupGender = view.findViewById(R.id.rad_gr__gender);
-        //imgPair = view.findViewById(R.id.img_pair);
-        //imgFather = view.findViewById(R.id.img_father);
-        //imgMother = view.findViewById(R.id.img_mother);
-//        txtPair = view.findViewById(R.id.txt_pair_name);
-//        txtMother = view.findViewById(R.id.txt_mother_name);
-//        txtFather = view.findViewById(R.id.txt_father_name);
-//        txtPairId = view.findViewById(R.id.txt_pair_id);
-//        txtMotherId = view.findViewById(R.id.txt_mother_id);
-//        txtFatherId = view.findViewById(R.id.txt_father_id);
-
-//        btn_action_bird.setOnClickListener(this);
-//        btn_delete_bird.setOnClickListener(this);
-//        imgPair.setOnClickListener(this);
-//        imgFather.setOnClickListener(this);
-//        imgMother.setOnClickListener(this);
 
         if (actionBird.equals(ADD_BIRD)) {
             btn_delete_bird.setVisibility(View.GONE);
@@ -166,7 +133,6 @@ public class BirdFragment extends Fragment implements View.OnClickListener {
             // No user is signed in
         }
     }
-
     private void updateBirdData(){
         if (!actionBird.equals(ADD_BIRD)){
             DatabaseReference refBirds = FirebaseDatabase.getInstance().getReference(Repository.TABLE_BIRDS);

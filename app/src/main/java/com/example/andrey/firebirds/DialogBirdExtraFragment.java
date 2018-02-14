@@ -24,10 +24,6 @@ public class DialogBirdExtraFragment extends DialogFragment {
 
     @BindView(R.id.edt_dialog_name) EditText edtName;
 
-//    public static final String FATHER_BIRD = "father";
-//    public static final String MOTHER_BIRD = "mother";
-//    public static final String PAIR_BIRD = "pair";
-
     public static String member;
 
     public static DialogBirdExtraFragment newInstance(String member) {
@@ -44,7 +40,6 @@ public class DialogBirdExtraFragment extends DialogFragment {
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_bird_extra, null);
         ButterKnife.bind(this, view);
-        //edtName = view.findViewById(R.id.edt_dialog_name);
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
